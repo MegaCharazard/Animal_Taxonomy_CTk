@@ -263,7 +263,10 @@ def kingdom_page():
             label.destroy()
         tosearch = "Animalia:"
         ypos = 10 
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
+        tmp_qry = "SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' AND active = 1"
+        record_set = cur.execute(tmp_qry)
+        print(record_set.rowcount)
+        for row in record_set:
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos)
             ypos = ypos + 27 
@@ -769,11 +772,9 @@ def delete():
     def delete():
         _name = name_entry.get()
 
-        cur.execute("DELETE FROM animal_details WHERE name = '"+_name+"'")
+        cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
         con.commit()
-
     
-
     insert_btn = createButton(delete_frame, "Delete", 40, delete, 40, 40)
 
 
