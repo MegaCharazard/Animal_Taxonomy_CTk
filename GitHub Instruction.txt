@@ -1,0 +1,111 @@
+Github:
+email : VeeraSivaVijay@gmail.com
+user: VVSiva
+pwd: *gthubveera10*
+passphrase : *gthub*
+
+DHEJUS :
+
+email : haridhejus@gmail.com
+user : MegaCharazard
+pwd : Charazard101
+
+To configure GitHub: https://www.youtube.com/watch?v=xwlQimbwJJE
+
+To generate sshkey : ssh-keygen -t rsa -b 4096 -C "<github gmail>"
+To evaluate if git is configured : eval $(ssh-agent -s)
+To add : ssh-add ~/.ssh/id_rsa
+To add public key : clip < ~/.ssh/id_rsa.pub
+
+To list the settings
+git config --list
+
+To view user:
+git config user.name
+
+To initialize : git init
+To add file to repo : git add .
+To commit : git commit -m "initially added"
+To add identity : 
+git config --global user.email "VeeraSivaVijay@gmail.com"
+git config --global user.name "VVSiva"
+
+Change User
+
+To stage files to repository(Stage & Commit Files: git add, git commit, & git log) : 
+https://www.nobledesktop.com/learn/git/stage-commit-files#:~:text=To%20stage%20all%20files%20use,git%20reset%20HEAD%20%5Bfilename%5D'.
+
+Check Status : git status
+If all changes have been committed, and there are no untracked files, it should say: nothing to commit, working tree clean.
+
+Stage all files: git add .
+Stage a file: git add <example.html>
+Stage a folder: git add <myfolder>
+(git status - You should see there are changes ready to be committed )
+
+Unstage a File : git reset HEAD <example.html>
+
+Deleting Files:
+git rm example.html to remove a file (and stage it)
+git rm -r myfolder to remove a folder (and stage it)
+
+Removing the .git directory:
+git rm -rf .git
+
+Commit Files: git commit -m "Message that describes what this change does"
+
+Fixing Your Last Commit Message :
+If you made a mistake in your last commit message, run this command:
+git commit --amend -m "Put your corrected message here"
+
+To add remot origin : git remote add origin <git@github.com:VVSiva/TestApp.git>
+To push files : git push origin master
+
+If it shows "fatal: 'origin' does not appear to be a git repository"
+Verify remote name / address : : git remote -v
+Remove the old remote : $git remote remove myOrigin
+Add missing remote : $git remote add origin <git@github.com:VVSiva/TestApp.git>
+# this will now work as expected
+$git push origin main
+
+I
+
+Remove the old remote
+$git remote remove myOrigin
+
+Add missing remote
+
+git ls-files --stage (shows the files)
+
+View a List of Commits : 
+When viewing a list of commits, there are various commands depending on how much info you want to see.
+
+To see a simplified list of commits, run this command:
+git log --oneline
+To see a list of commits with more detail (such who made the commit and when), run this command:
+git log
+NOTE: If the list is long, use the Down/Up Arrow keys to scroll and hit Q to quit.
+
+To see a list of commits with even more detail (including which files changed), run this command:
+git log --stat
+NOTE: If the list is long, use the Down/Up Arrow keys to scroll and hit Q to quit.
+
+To show your Git username:
+The git config command
+The git config --list command
+Looking in your Git configuration file
+git config user.name
+Errors : 
+1) fatal: not a git repository (or any of the parent directories): .git
+Solution : 
+
+2) fatal: 'origin' does not appear to be a git repository
+
+3) error: failed to push some refs to 'origin'
+Sol:
+
+1) download git bash : https://git-scm.com/download/win
+
+To pull:-
+ i) Initialize git int dir. you want.
+ii) git pull <repo URL>
