@@ -5,8 +5,14 @@ import os
 import sqlite3
 from tkinter import messagebox
 
+console_width = 600
+console_height = 600
+
+# console_width = window.winfo_screenwidth()
+# console_height = window.winfo_screenwidth()
+
 root = CTk()
-root.geometry("600x600")
+root.geometry("{}x{}".format(console_width, console_height))
 root.title("Animal Taxonomy")
 root.maxsize(width = 600, height = 600)
 

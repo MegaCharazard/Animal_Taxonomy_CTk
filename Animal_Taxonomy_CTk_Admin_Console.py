@@ -673,55 +673,55 @@ def insert():
     insert_root.title("Insert")
     insert_root.maxsize(width = 400, height = 300)
 
-    login_frame = CTkFrame(insert_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-    login_frame.pack()
+    insert_frame = CTkFrame(insert_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+    insert_frame.pack()
 
-    name_label = CTkLabel(login_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     name_label.place(x = 5, y = 5)
 
-    name_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     name_entry.place(x = 170, y = 5)
 
-    kingdom_label = CTkLabel(login_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     kingdom_label.place(x = 5, y = 35)
 
-    kingdom_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     kingdom_entry.place(x = 170, y = 35)
 
-    phylum_label = CTkLabel(login_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     phylum_label.place(x = 5, y = 65)
 
-    phylum_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     phylum_entry.place(x = 170, y = 65)
 
-    class_label = CTkLabel(login_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     class_label.place(x = 5, y = 95)
 
-    class_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     class_entry.place(x = 170, y = 95)
 
-    order_label = CTkLabel(login_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     order_label.place(x = 5, y = 125)
 
-    order_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     order_entry.place(x = 170, y = 125)
 
-    family_label = CTkLabel(login_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     family_label.place(x = 5, y = 155)
 
-    family_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     family_entry.place(x = 170, y = 155)
 
-    genus_label = CTkLabel(login_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     genus_label.place(x = 5, y = 185)
 
-    genus_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     genus_entry.place(x = 170, y = 185)
 
-    species_label = CTkLabel(login_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
     species_label.place(x = 5, y = 215)
 
-    species_entry = CTkEntry(login_frame, text_color = "#c850c0")
+    species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
     species_entry.place(x = 170, y = 215)
     
     def insert():
@@ -738,12 +738,12 @@ def insert():
                     (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
         con.commit()
 
-    insert_btn = createButton(login_frame, "Insert", 40, insert, 40, 255)
+    insert_btn = createButton(insert_frame, "Insert", 40, insert, 40, 255)
 
     def back_to_admin_console():
         insert_root.destroy()
 
-    back_btn = createButton(login_frame, "Back", 40, back_to_admin_console, 210, 255)
+    back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 255)
 
     insert_root.mainloop()
 
@@ -751,9 +751,41 @@ def update():
     pass
 
 def delete():
-    pass
+    delete_root = CTk()
+    delete_root.iconbitmap(r"icon/favicon6.ico")
+    delete_root.geometry("400x70")
+    delete_root.title("Delete")
+    delete_root.maxsize(width = 400, height = 70)
+
+    delete_frame = CTkFrame(delete_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 70)
+    delete_frame.pack()
+
+    name_label = CTkLabel(delete_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_label.place(x = 5, y = 5)
+
+    name_entry = CTkEntry(delete_frame, text_color = "#c850c0")
+    name_entry.place(x = 170, y = 5)
+    
+    def delete():
+        _name = name_entry.get()
+
+        cur.execute("DELETE FROM animal_details WHERE name = '"+_name+"'")
+        con.commit()
+
+    
+
+    insert_btn = createButton(delete_frame, "Delete", 40, delete, 40, 40)
+
+
+    def back_to_admin_console():
+        delete_root.destroy()
+
+    back_btn = createButton(delete_frame, "Back", 40, back_to_admin_console, 210, 40)
+
+    delete_root.mainloop()
 
     root.destroy()
+
 
 def back_to_main_console():
     root.destroy()
