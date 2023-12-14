@@ -5,21 +5,26 @@ import os
 import sqlite3
 from tkinter import messagebox
 
-console_width = 600
-console_height = 600
-
-# console_width = window.winfo_screenwidth()
-# console_height = window.winfo_screenwidth()
-
 root = CTk()
-root.geometry("{}x{}".format(console_width, console_height))
+
+app_width = 600
+app_height = 600
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+x = (screen_width/2)-(app_width/2)
+y = (screen_height/2)-(app_height/2)
+
+root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+
 root.title("Animal Taxonomy")
 root.maxsize(width = 600, height = 600)
 
 root.iconbitmap(r"icon/favicon6.ico")
 set_appearance_mode("Dark")
 
-con = sqlite3.connect("Authentication_Db.db")
+con = sqlite3.connect("Animal_Taxonomy_Db.db")
 cur = con.cursor()
 
 global  glb_current_working_directory

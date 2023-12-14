@@ -5,13 +5,25 @@ from subprocess import call
 import sqlite3
 
 root = CTk()
-root.geometry("1000x550")
+
+app_width = 1000
+app_height = 550
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+x = (screen_width/2)-(app_width/2)
+y = (screen_height/2)-(app_height/2)
+
+root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+
 root.title("Animal Taxonomy")
 root.maxsize(width = 1000, height = 550)
 root.iconbitmap(r"icon/favicon6.ico")
 set_appearance_mode("Dark")
 
 con = sqlite3.connect("Animal_Taxonomy_Db.db")
+
 cur = con.cursor()
 
 global glb_top_position, \
@@ -51,8 +63,8 @@ def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypo
         glb_top_position = glb_top_position + _height + 5
     return tmp_frame
 
-def createRadioButton (_frame ,_text, _fg_color , _value , _command, _argument,  _xpos, _ypos ):
-    tmpRdBtn = CTkRadioButton(_frame, text = _text , fg_color = _fg_color, value = _value, command = lambda:(_command(_argument)))
+def createRadioButton (_frame ,_text , _value, _variable, _command,  _xpos, _ypos ):
+    tmpRdBtn = CTkRadioButton(_frame, text = _text , value = _value, variable = _variable, command = lambda :(_command()) )
     tmpRdBtn.place(x =_xpos, y = _ypos)
     return tmpRdBtn
 
@@ -134,117 +146,105 @@ def home_page():
     label = createSearchByLabel(home_frame)
 
     global radio_value
-    def radio_value(value_before):
-        if value_before == "":
-            label = CTkLabel(home_frame, text = "! Please Choose An Option !",font = ("Brush Script MT" , 15, "italic" ),
-                              fg_color = "transparent", fg = "red")
-            label.place(x = 1, y = 470)
-        else:
-            global home_value
-            home_value = value_before
+    def radio_value():
+        #print(home_radio_val.get())
+        pass
 
-    search_name_btn = createRadioButton (home_frame , "NAME", "darkgrey" , "NAME" , radio_value, "name", 10, 100 )
+    home_radio_val = StringVar(value = "other")
 
-    search_kingdom_btn = createRadioButton (home_frame ,"KINGDOM", "darkgrey" , "NAME" , radio_value, "kingdom", 81, 100)
+    search_name_btn = createRadioButton (home_frame , "NAME", "name", home_radio_val, radio_value, 10, 100 )
 
-    search_phylum_btn = createRadioButton (home_frame ,"PHYLUM", "darkgrey" , "NAME" , radio_value, "phylum", 177, 100)
+    search_kingdom_btn = createRadioButton (home_frame ,"KINGDOM", "kingdom" , home_radio_val, radio_value, 81, 100)
 
-    search_class_btn = createRadioButton (home_frame ,"CLASS", "darkgrey" , "NAME" , radio_value, "class", 262, 100)
+    search_phylum_btn = createRadioButton (home_frame ,"PHYLUM", "phylum" , home_radio_val, radio_value, 177, 100)
 
-    search_order_btn = createRadioButton(home_frame ,"ORDER", "darkgrey" , "NAME" , radio_value, "naturalorder", 335, 100)
+    search_class_btn = createRadioButton (home_frame ,"CLASS", "class" , home_radio_val, radio_value, 262, 100)
 
-    search_family_btn = createRadioButton (home_frame ,"FAMILY", "darkgrey" , "NAME" , radio_value, "family", 415, 100)
+    search_order_btn = createRadioButton(home_frame ,"ORDER", "naturalorder" , home_radio_val, radio_value, 335, 100)
 
-    search_genus_btn = createRadioButton (home_frame ,"GENUS", "darkgrey" , "NAME" , radio_value, "genus", 495, 100)
+    search_family_btn = createRadioButton (home_frame ,"FAMILY", "family" , home_radio_val, radio_value, 415, 100)
 
-    search_species_btn = createRadioButton (home_frame ,"SPECIES", "darkgrey" , "NAME" , radio_value, "species", 570, 100)
+    search_genus_btn = createRadioButton (home_frame ,"GENUS", "genus" , home_radio_val, radio_value, 495, 100)
 
-    def on_home_search_btn_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-        else:
-            tosearch = tosearch
-
-        if home_value == "name":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  name = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 30, "italic" ), text_color = "aliceblue")
-                label.place(x = 1, y = 10) 
-
-        elif home_value == "kingdom":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "phylum":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "class":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "naturalorder":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "family":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "genus":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
-        elif home_value == "species":
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10 
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
+    search_species_btn = createRadioButton (home_frame ,"SPECIES", "species" , home_radio_val, radio_value, 570, 100)
 
     result_frame = createFrame(home_frame,  "#c850c0",  2, "transparent", 15, 173, 790, 333)
+
+    def on_home_search_btn_click():
+        tosearch = ((search.get())).title()
+        if home_radio_val.get() == "name":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  name = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = 10) 
+
+        elif home_radio_val.get() == "kingdom":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"'AND active = 1"):
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "phylum":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "class":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "naturalorder":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "family":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "genus":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
+
+        elif home_radio_val.get() == "species":
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species = '"+tosearch+"' AND active = 1"):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
 
     label = createSearchResultLabel(home_frame)
 
     search = createSearchEntry(home_frame, _ishomepage = True)
-    global contents
-    contents = StringVar()
-    contents.set("Search As Per Your Option.")
-    search["textvariable"] = contents
 
     search_btn = createSearchButton(home_frame, on_home_search_btn_click, _ishomepage = True)
 
@@ -261,11 +261,10 @@ def kingdom_page():
     def on_search_animal_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
-        tosearch = "Animalia:"
+        tosearch = "Animalia"
         ypos = 10 
         tmp_qry = "SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' AND active = 1"
         record_set = cur.execute(tmp_qry)
-        print(record_set.rowcount)
         for row in record_set:
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos)
@@ -279,9 +278,9 @@ def kingdom_page():
     def on_search_plant_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
-        tosearch = "Plantae:"
+        tosearch = "Plantae"
         ypos = 11 
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"'AND active = 1"):
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos) 
             ypos = ypos + 27 
@@ -294,9 +293,9 @@ def kingdom_page():
     def on_search_fungi_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
-        tosearch = "Fungi:"
+        tosearch = "Fungi"
         ypos = 10 
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"'AND active = 1"):
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos) 
             ypos = ypos + 27 
@@ -309,9 +308,9 @@ def kingdom_page():
     def on_search_protista_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
-        tosearch = "Protista:"
+        tosearch = "Protista"
         ypos = 10 
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"'AND active = 1"):
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos) 
             ypos = ypos + 27 
@@ -324,9 +323,9 @@ def kingdom_page():
     def on_search_monera_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
-        tosearch = "Monera:"
+        tosearch = "Monera"
         ypos = 10 
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"' "):
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom = '"+tosearch+"'AND active = 1"):
             label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
             label.place(x = 10, y = ypos) 
             ypos = ypos + 27 
@@ -347,45 +346,67 @@ def phylum_page():
 
     label = createSearchByLabel(phylum_frame)
 
+    def combo_get_value(combo_value):
+        tosearch = combo_value
+        print(tosearch)
+    
+        def on_pylum_search_btn_click():
+            for label in result_frame.winfo_children():
+                label.destroy()
+            ypos = 10 
+            #tosearch = tosearch.title()
+            print(tosearch)
+            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum = '"+tosearch+"' AND active = 1 "):
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
+                label.place(x = 10, y = ypos)
+                ypos = ypos + 27
 
-    def radio_value(value_before):
-        if value_before == "":
+        search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40, 
+                            command = on_pylum_search_btn_click)
+        search_btn.place(x = 660, y = 130)
+
+
+
+    def radio_value():
+        val_of_phylum = home_radio_val.get()
+        print(val_of_phylum)
+        #pass
+        if val_of_phylum == "":
             label = CTkLabel(phylum_frame, text = "! Please Choose An Option !",font = ("Brush Script MT" , 15, "italic" ),
                               fg_color = "darkgrey", fg = "red")
             label.place(x = 10, y = 470)
         else:
             global phylum_value
-            phylum_value = value_before
+            phylum_value = val_of_phylum
         
             if phylum_value == "Animalia":
-                combo = CTkComboBox(phylum_frame, width = 200)
-                combo["values"] = [ 
-                "Chordate", 
-                "Arthrpod", 
-                "Molusc", 
+                combo_animal_val = [ 
+                "Chordata", 
+                "Arthropoda", 
+                "Molusca", 
                 "Echinoderm", 
-                "Annalid"
+                "Annalida"
                 ] 
+                combo = CTkComboBox(phylum_frame, width = 640, values = combo_animal_val, command = combo_get_value)
                 combo.set("Animalia")
                 #combo.current()
                 combo.place(x = 10, y = 130)
 
             elif phylum_value == "Plantae":
-                combo = CTkComboBox(phylum_frame, width = 200)
-                combo["values"] = [  
+                combo_plant_val = [  
                 "Bryophyta", 
                 "Cycadophyta", 
                 "Ginkgophyta", 
                 "Chlorophyta", 
                 "Lycophyta"
                 ]
+                combo = CTkComboBox(phylum_frame, width = 640, values = combo_plant_val, command = combo_get_value)
                 combo.set("Plantae")
                 #combo.current()
                 combo.place(x = 10, y = 130)
 
             elif phylum_value == "Fungi":
-                combo = CTkComboBox(phylum_frame, width = 200)
-                combo["values"] = [ 
+                combo_fungi_val = [ 
                 "Ascomycota", 
                 "Basidiomycota", 
                 "Zygomycota",
@@ -394,72 +415,71 @@ def phylum_page():
                 "Aphelida",
                 "Mycetozoa"
                 ]
+                combo = CTkComboBox(phylum_frame, width = 640, values = combo_fungi_val, command = combo_get_value)
                 combo.set("Fungi")
                 #combo.current()
                 combo.place(x = 10, y = 130)
 
             elif phylum_value == "Protista":
-                combo = CTkComboBox(phylum_frame, width = 200)
-                combo["values"] = [ 
+                combo_protista_val = [ 
                 "Dinoflagellates", 
                 "Amoebozoa", 
                 "Rhodophyta",
                 "Ciliates"  
                 ] 
+                combo = CTkComboBox(phylum_frame, width = 640, values = combo_protista_val, command = combo_get_value)
                 combo.set("Protista")
                 #combo.current()
                 combo.place(x = 10, y = 130)
 
             elif phylum_value == "Monera": 
-                combo = CTkComboBox(phylum_frame, width = 200)
-                combo["values"] = [ 
+                combo_monera_val = [ 
                 "Archaebacteria", 
                 "Schizopyta", 
                 "Cyanophyta",
                 "Prochlorophyta"  
                 ] 
+                combo = CTkComboBox(phylum_frame, width = 640, values = combo_monera_val, command = combo_get_value)
                 combo.set("Monera")
                 #combo.current()
                 combo.place(x = 10, y = 130)
 
-    search_phylum_animal_menu =createRadioButton (phylum_frame ,"Animal", "darkgrey" , "NAME" , radio_value, "Animalia", 10, 100)
+    global home_radio_val
+    home_radio_val = StringVar(value = "other")
 
-    search_phylum_plant_menu =createRadioButton (phylum_frame ,"Plant", "darkgrey" , "NAME" , radio_value, "Plantae", 85, 100)
 
-    search_phylum_fungi_menu =createRadioButton (phylum_frame ,"Fungi", "darkgrey" , "NAME" , radio_value, "Fungi", 150, 100)
+    search_phylum_animal_menu =createRadioButton (phylum_frame ,"Animal", "Animalia" , home_radio_val, radio_value, 10, 100)
 
-    search_phylum_protista_menu =createRadioButton (phylum_frame ,"Protista", "darkgrey" , "NAME" , radio_value, "Protista", 215, 100)
+    search_phylum_plant_menu =createRadioButton (phylum_frame ,"Plant", "Plantae" , home_radio_val, radio_value, 85, 100)
 
-    search_phylum_monera_menu =createRadioButton (phylum_frame ,"Monera", "darkgrey" , "Monera" , radio_value, "Animalia", 295, 100)
+    search_phylum_fungi_menu =createRadioButton (phylum_frame ,"Fungi", "Fungi" , home_radio_val, radio_value, 150, 100)
+
+    search_phylum_protista_menu =createRadioButton (phylum_frame ,"Protista", "Protista" , home_radio_val, radio_value, 215, 100)
+
+    search_phylum_monera_menu =createRadioButton (phylum_frame ,"Monera", "Monera" , home_radio_val, radio_value, 295, 100)
 
     result_frame = createFrame(phylum_frame,  "#c850c0",  2, "transparent", 15, 173, 790, 333)
 
     label = createSearchResultLabel(phylum_frame)
     
-    combo = CTkComboBox(phylum_frame, width = 200)
-    combo["values"] = ("Choose", "An", "Option!")
-    combo.set("Please Choose An Option!")
-    #combo.current()
-    contents = StringVar()
-    combo["textvariable"] = contents
+    combo = CTkComboBox(phylum_frame, width = 640)
     combo.place(x = 10, y = 130)
     
-    def on_pylum_search_btn_click():
-        for label in result_frame.winfo_children():
-            label.destroy()
-        ypos = 10 
-        tosearch = combo.get()
-        tosearch = tosearch.title() + ":"
-        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum = '"+tosearch+"' "):
-            label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-            label.place(x = 1, y = ypos)
-            ypos = ypos + 27
+    # def on_pylum_search_btn_click():
+    #     for label in result_frame.winfo_children():
+    #         label.destroy()
+    #     ypos = 10 
+    #     #tosearch = tosearch.title()
+    #     print(tosearch)
+    #     for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum = '"+tosearch+"' AND active = 1 "):
+    #         label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), text_color = "#FFCC70")
+    #         label.place(x = 1, y = ypos)
+    #         ypos = ypos + 27
 
 
     global search_btn
-    search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40, 
-                           command = on_pylum_search_btn_click())
-    search_btn.place(x = 230, y = 130)
+    search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40)
+    search_btn.place(x = 660, y = 130)
 
 def class_page():
 
@@ -471,30 +491,20 @@ def class_page():
     result_frame = createFrame(class_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
 
     search = createSearchEntry(class_frame)
-    global contents
-    contents = StringVar()
-    contents.set("Search For Classes.")
-    search["textvariable"] = contents
+    # global contents
+    # contents = StringVar()
+    # contents.set("Search For Classes.")
+    # search["textvariable"] = contents
 
     def on_class_search_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-        else:
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
+        tosearch = ((search.get())).title()
+        for label in result_frame.winfo_children():
+            label.destroy()
+        ypos = 10
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class = '"+tosearch+"' "):
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70" )
+            label.place(x = 10, y = ypos)
+            ypos = ypos + 27
  
     search_btn = createSearchButton(class_frame, on_class_search_click)
 
@@ -669,95 +679,228 @@ def delete_pages():
     for frame in main_frame.winfo_children():
         frame.destroy()
 
-def insert():
-    insert_root = CTk()
-    insert_root.iconbitmap(r"icon/favicon6.ico")
-    insert_root.geometry("400x300")
-    insert_root.title("Insert")
-    insert_root.maxsize(width = 400, height = 300)
-
-    insert_frame = CTkFrame(insert_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-    insert_frame.pack()
-
-    name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    name_label.place(x = 5, y = 5)
-
-    name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    name_entry.place(x = 170, y = 5)
-
-    kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    kingdom_label.place(x = 5, y = 35)
-
-    kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    kingdom_entry.place(x = 170, y = 35)
-
-    phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    phylum_label.place(x = 5, y = 65)
-
-    phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    phylum_entry.place(x = 170, y = 65)
-
-    class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    class_label.place(x = 5, y = 95)
-
-    class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    class_entry.place(x = 170, y = 95)
-
-    order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    order_label.place(x = 5, y = 125)
-
-    order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    order_entry.place(x = 170, y = 125)
-
-    family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    family_label.place(x = 5, y = 155)
-
-    family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    family_entry.place(x = 170, y = 155)
-
-    genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    genus_label.place(x = 5, y = 185)
-
-    genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    genus_entry.place(x = 170, y = 185)
-
-    species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    species_label.place(x = 5, y = 215)
-
-    species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    species_entry.place(x = 170, y = 215)
+def add():
     
-    def insert():
-        _name = name_entry.get()
-        _kingdom = kingdom_entry.get()
-        _phylum = phylum_entry.get()
-        _class = class_entry.get()
-        _order = order_entry.get()
-        _family = family_entry.get()
-        _genus = genus_entry.get()
-        _species = species_entry.get()
+    add_root = CTk()
+    add_width = 400
+    add_height = 70
 
-        cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
-                    (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
-        con.commit()
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
 
-    insert_btn = createButton(insert_frame, "Insert", 40, insert, 40, 255)
+    x = (screen_width/2)-(add_width/2)
+    y = (screen_height/2)-(add_height/2)
 
-    def back_to_admin_console():
-        insert_root.destroy()
+    add_root.geometry(f"{add_width}x{add_height}+{int(x)}+{int(y)}") 
+    add_root.iconbitmap(r"icon/favicon6.ico")
+    add_root.title("Add")
+    add_root.maxsize(width = 400, height = 70)    
 
-    back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 255)
+    add_frame = CTkFrame(add_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+    add_frame.pack()
 
-    insert_root.mainloop()
+    def on_add_admin_click():
+        add_root.destroy()
 
+        add_admin = CTk()
+        add_width = 400
+        add_height = 170
+
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+
+        x = (screen_width/2)-(add_width/2)
+        y = (screen_height/2)-(add_height/2)
+
+        add_admin.geometry(f"{add_width}x{add_height}+{int(x)}+{int(y)}")    
+        add_admin.iconbitmap(r"icon/favicon6.ico")
+        add_admin.title("Add Admin")
+        add_admin.maxsize(width = 400, height = 170)
+
+        add_admin_frame = CTkFrame(add_admin, border_color = "#FFCC70", border_width = 2, width = 400, height = 170)
+        add_admin_frame.pack()
+
+        user_name_label = CTkLabel(add_admin_frame, text = "Username:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        user_name_label.place(x = 5, y = 5)
+
+        user_name_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
+        user_name_entry.place(x = 200, y = 5)
+
+        password_label = CTkLabel(add_admin_frame, text = "Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        password_label.place(x = 5, y = 35)
+
+        password_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
+        password_entry.place(x = 200, y = 35)
+
+        re_password_label = CTkLabel(add_admin_frame, text = "Confirm Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        re_password_label.place(x = 5, y = 65)
+
+        re_password_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
+        re_password_entry.place(x = 200, y = 65)
+        
+        def insert_admin():
+            _username = user_name_entry.get()
+            _password = password_entry.get()
+            _repassword = re_password_entry.get()
+
+            tmp_qry = cur.execute("SELECT EXISTS(SELECT 1 FROM User_details WHERE Username= '"+_username+"')")
+
+            if _password != _repassword:
+                errorlabel = CTkLabel(add_admin_frame, text = "Passwords Don't Match", font = ("Arial", 12, "italic", "bold"),
+                                 fg_color = "transparent", text_color = "Red" )
+                errorlabel.place(x = 110, y = 125)
+            elif tmp_qry != 0:
+                errorlabel = CTkLabel(add_admin_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
+                                 fg_color = "transparent", text_color = "Red" )
+                errorlabel.place(x = 140, y = 125)
+
+            else:
+                cur.execute("INSERT INTO User_details (Username, Password) VALUES (?,?)",(_username, _password))
+                
+                con.commit()
+
+        insert_btn = createButton(add_admin_frame, "Insert", 40, insert_admin, 40, 105)
+
+        def back_to_admin_console():
+            add_admin.destroy()
+
+        back_btn = createButton(add_admin_frame, "Back", 40, back_to_admin_console, 210, 105)
+        
+
+        add_admin.mainloop()
+
+    def on_add_entry_click():
+        
+        add_root.destroy()
+        insert_root = CTk()
+        
+        add_width = 400
+        add_height = 300
+
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+
+        x = (screen_width/2)-(add_width/2)
+        y = (screen_height/2)-(add_height/2)
+
+        insert_root.geometry(f"{add_width}x{add_height}+{int(x)}+{int(y)}")    
+        insert_root.iconbitmap(r"icon/favicon6.ico")
+        insert_root.title("Add Entry")
+        insert_root.maxsize(width = 400, height = 300)
+
+        insert_frame = CTkFrame(insert_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+        insert_frame.pack()
+
+        name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        name_label.place(x = 5, y = 5)
+
+        name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        name_entry.place(x = 170, y = 5)
+
+        kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        kingdom_label.place(x = 5, y = 35)
+
+        kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        kingdom_entry.place(x = 170, y = 35)
+
+        phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        phylum_label.place(x = 5, y = 65)
+
+        phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        phylum_entry.place(x = 170, y = 65)
+
+        class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        class_label.place(x = 5, y = 95)
+
+        class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        class_entry.place(x = 170, y = 95)
+
+        order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        order_label.place(x = 5, y = 125)
+
+        order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        order_entry.place(x = 170, y = 125)
+
+        family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        family_label.place(x = 5, y = 155)
+
+        family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        family_entry.place(x = 170, y = 155)
+
+        genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        genus_label.place(x = 5, y = 185)
+
+        genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        genus_entry.place(x = 170, y = 185)
+
+        species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        species_label.place(x = 5, y = 215)
+
+        species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+        species_entry.place(x = 170, y = 215)
+        
+        def insert():
+            _name = name_entry.get().title()
+            _kingdom = kingdom_entry.get().title()
+            _phylum = phylum_entry.get().title()
+            _class = class_entry.get().title()
+            _order = order_entry.get().title()
+            _family = family_entry.get().title()
+            _genus = genus_entry.get().title()
+            _species = species_entry.get().title()
+
+            cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
+                        (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
+            
+            con.commit()
+
+        insert_btn = createButton(insert_frame, "Insert", 40, insert, 40, 255)
+
+        def back_to_admin_console():
+            insert_root.destroy()
+
+        back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 255)
+
+        insert_root.mainloop()
+
+    add_admin_btn = createButton (add_frame , "Add Admin",40, on_add_admin_click, 40, 30 )
+
+    add_entry_btn = createButton (add_frame ,"Add Entry", 40, on_add_entry_click, 210, 30)
+
+    add_root.mainloop()
+
+    
 def update():
-    pass
+    update_root = CTk()
+    update_root.iconbitmap(r"icon/favicon6.ico")
+    update_root.geometry("400x300")
+    update_root.title("Delete")
+    update_root.maxsize(width = 400, height = 300)
+
+    update_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+
+    name_label = CTkLabel(update_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+
+    name_btn = createButton(update_frame, "Name ", 42, "", 5, 5)
+    
+    update_frame.pack()
+    update_root.mainloop()
 
 def delete():
     delete_root = CTk()
+    
+    delete_width = 400
+    delete_height = 70
+
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    x = (screen_width/2)-(delete_width/2)
+    y = (screen_height/2)-(delete_height/2)
+
+    delete_root.geometry(f"{delete_width}x{delete_height}+{int(x)}+{int(y)}")    
     delete_root.iconbitmap(r"icon/favicon6.ico")
-    delete_root.geometry("400x70")
-    delete_root.title("Delete")
+    delete_root.title("Update")
     delete_root.maxsize(width = 400, height = 70)
 
     delete_frame = CTkFrame(delete_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 70)
@@ -787,18 +930,16 @@ def delete():
 
     root.destroy()
 
-
 def back_to_main_console():
     root.destroy()
     call(["python", glb_current_working_directory + "/Animal_Taxonamy_Ctk_Main.py"])
-
 
 menu_frame = CTkFrame(root, fg_color = "transparent")
 
 crud_frame = createFrame(menu_frame, "dodgerblue3",  border_line_size_2, glb_fg_color_transparent , 5, 5, 150, glb_crud_frame_height)
 
 
-insert_btn = createImageButton(crud_frame, "", "add.png", 100, insert, 25, 8)
+insert_btn = createImageButton(crud_frame, "", "add.png", 100, add, 25, 8)
 
 edit_btn = createImageButton(crud_frame, "", "edit_blue.png", 100, update, 85, 8)
 

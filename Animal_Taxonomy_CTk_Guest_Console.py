@@ -5,7 +5,18 @@ from subprocess import call
 import sqlite3
 
 root = CTk()
-root.geometry("1000x550")
+
+app_width = 1000
+app_height = 550
+
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+x = (screen_width/2)-(app_width/2)
+y = (screen_height/2)-(app_height/2)
+
+root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+
 root.title("Animal Taxonomy")
 root.maxsize(width = 1000, height = 550)
 root.iconbitmap(r"icon/favicon6.ico")
