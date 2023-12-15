@@ -256,7 +256,11 @@ def kingdom_page():
 
     label = createSearchByLabel(kingdom_frame)
 
-    result_frame = createFrame(kingdom_frame,  "#c850c0",  2, "transparent", 15, 143, 790, 363)
+    result_frame = CTkScrollableFrame(kingdom_frame, width = 790,fg_color = "transparent",  height = 363, corner_radius = 5, border_color = "#c850c0", border_width=2)
+    result_frame.place(x = 15, y = 143)
+    #(kingdom_frame,  "#c850c0",  2, "transparent", 15, 143, 790, 363)
+    # result_frame_scroll = CTkScrollbar (result_frame, corner_radius=15, border_spacing = 3)
+    # result_frame_scroll.place(x = 780)
 
     def on_search_animal_btn_click():
         for label in result_frame.winfo_children():
