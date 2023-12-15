@@ -22,7 +22,7 @@ root.maxsize(width = 1000, height = 550)
 root.iconbitmap(r"icon/favicon6.ico")
 set_appearance_mode("Dark")
 
-con = sqlite3.connect("Animal_Taxonomy_Db.db")
+con = sqlite3.connect("Animal_Taxonomy_Db.db", timeout = 3)
 
 cur = con.cursor()
 
@@ -851,7 +851,6 @@ def add():
 
             cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
                         (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
-            
             con.commit()
 
         insert_btn = createButton(insert_frame, "Insert", 40, insert, 40, 255)
@@ -868,21 +867,107 @@ def add():
     add_entry_btn = createButton (add_frame ,"Add Entry", 40, on_add_entry_click, 210, 30)
 
     add_root.mainloop()
-
     
 def update():
     update_root = CTk()
     update_root.iconbitmap(r"icon/favicon6.ico")
-    update_root.geometry("400x300")
-    update_root.title("Delete")
+    update_root.title("Update")
     update_root.maxsize(width = 400, height = 300)
 
     update_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+        
+    add_width = 400
+    add_height = 300
 
-    name_label = CTkLabel(update_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
 
-    name_btn = createButton(update_frame, "Name ", 42, "", 5, 5)
+    x = (screen_width/2)-(add_width/2)
+    y = (screen_height/2)-(add_height/2)
+
+    update_root.geometry(f"{add_width}x{add_height}+{int(x)}+{int(y)}")    
+    update_root.iconbitmap(r"icon/favicon6.ico")
+    update_root.maxsize(width = 400, height = 300)
+
+    insert_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+    insert_frame.pack()
     
+
+    name_update_label = CTkLabel(insert_frame, text = "Name Of Animal:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_update_label.place(x = 5, y = 5)
+
+    name_update_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    name_update_entry.place(x = 200, y = 5)
+
+    name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_label.place(x = 5, y = 35)
+
+    name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    name_entry.place(x = 200, y = 35)
+    
+    kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    kingdom_label.place(x = 5, y = 65)
+
+    kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    kingdom_entry.place(x = 200, y = 65)
+
+    phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    phylum_label.place(x = 5, y = 95)
+
+    phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    phylum_entry.place(x = 200, y = 95)
+
+    class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    class_label.place(x = 5, y = 125)
+
+    class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    class_entry.place(x = 200, y = 125)
+
+    order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    order_label.place(x = 5, y = 155)
+
+    order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    order_entry.place(x = 200, y = 155)
+
+    family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    family_label.place(x = 5, y = 185)
+
+    family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    family_entry.place(x = 200, y = 185)
+
+    genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    genus_label.place(x = 5, y = 215)
+
+    genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    genus_entry.place(x = 200, y = 215)
+
+    species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    species_label.place(x = 5, y = 245)
+
+    species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
+    species_entry.place(x = 200, y = 245)
+    
+    def update():
+        _nametoupdate = name_update_entry.get().title()
+        _name = name_entry.get().title()
+        _kingdom = kingdom_entry.get().title()
+        _phylum = phylum_entry.get().title()
+        _class = class_entry.get().title()
+        _order = order_entry.get().title()
+        _family = family_entry.get().title()
+        _genus = genus_entry.get().title()
+        _species = species_entry.get().title()
+
+        cur.execute("UPDATE animal_details SET name = '"+_name+"', kingdom = '"+_kingdom+"', phylum = '"+_phylum+"', class = '"+_class+"',naturalorder = '"+_order+"', family = '"+_family+"', genus = '"+_genus+"', species = '"+_species+"' , active = 0 WHERE name = '"+_nametoupdate+"' AND active = 1")  
+        con.commit()
+
+    update_btn = createButton(insert_frame, "Update", 40, update, 40, 255)
+
+    def back_to_admin_console():
+        update_root.destroy()
+
+    back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 255)
+
     update_frame.pack()
     update_root.mainloop()
 
@@ -973,4 +1058,7 @@ main_frame = createFrame(root,  "#FFCC70",  3, "transparent", 0 , 0, 950, 550)
 main_frame.pack(side = "left")
 main_frame.pack_propagate(False)
 
+
+
 root.mainloop()
+con.close()
