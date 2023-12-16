@@ -3,20 +3,22 @@ from PIL import Image
 import os 
 from subprocess import call
 import sqlite3
+from Global_Config import *
 
 root = CTk()
 
-app_width = 1000
-app_height = 550
+# app_width = 1000
+# app_height = 550
 
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
+# screen_width = root.winfo_screenwidth()
+# screen_height = root.winfo_screenheight()
 
-x = (screen_width/2)-(app_width/2)
-y = (screen_height/2)-(app_height/2)
+# x = (screen_width/2)-(app_width/2)
+# y = (screen_height/2)-(app_height/2)
 
-root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
+# root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
+centreScreen(root, root,1000,550)
 root.title("Animal Taxonomy")
 root.maxsize(width = 1000, height = 550)
 root.iconbitmap(r"icon/favicon6.ico")
@@ -32,7 +34,8 @@ global glb_top_position, \
     glb_menu_btn_ypos_space, glb_menu_btn_height, glb_menu_btn_width, glb_menu_btn_current_ypos, glb_menu_btn_font,\
     glb_home_btn_xpos, glb_img_btn_heights_space, \
     glb_fg_color_transparent,\
-    border_line_size_2, glb_common_xpos, glb_current_working_directory
+    border_line_size_2, glb_common_xpos, glb_current_working_directory,\
+    is_add_btn_enabled, is_edit_btn_enabled, is_delete_btn_enabled
 
 # get the current working directory
 glb_current_working_directory = os.path.dirname(os.path.realpath(__file__))
@@ -49,6 +52,9 @@ glb_menu_btn_font = ("Bradley Hand ITC" , 20, "italic", "bold" )
 glb_fg_color_transparent = "transparent"
 border_line_size_2 = 2
 glb_common_xpos = 15
+is_add_btn_enabled = "normal"
+is_edit_btn_enabled = "normal" 
+is_delete_btn_enabled = "normal"
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypos = 0 , _width = 100, _height = 100, _is_content_frame = False):
@@ -86,7 +92,8 @@ def createButton(_frame, _text, _corner_radius, _call_back_function, _xpos, _ypo
 def createImageButton(_frame, _text, _image, _corner_radius, _call_back_function, _xpos, _ypos):
     img = Image.open(r"Images/" + _image)
     tmp_btn = CTkButton(_frame,text = _text, image = CTkImage(dark_image=img, light_image=img),corner_radius = _corner_radius,
-                         width=  glb_img_btn_width, height= glb_img_btn_height, command = lambda: (_call_back_function()))
+                         width=  glb_img_btn_width, height= glb_img_btn_height,state = "normal",
+                           command = lambda: (_call_back_function()))
     tmp_btn.place(x = _xpos, y = _ypos)
     return tmp_btn
 
@@ -256,11 +263,10 @@ def kingdom_page():
 
     label = createSearchByLabel(kingdom_frame)
 
-    result_frame = CTkScrollableFrame(kingdom_frame, width = 790,fg_color = "transparent",  height = 363, corner_radius = 5, border_color = "#c850c0", border_width=2)
-    result_frame.place(x = 15, y = 143)
-    #(kingdom_frame,  "#c850c0",  2, "transparent", 15, 143, 790, 363)
-    # result_frame_scroll = CTkScrollbar (result_frame, corner_radius=15, border_spacing = 3)
-    # result_frame_scroll.place(x = 780)
+    result_frame = createFrame(kingdom_frame,  "#c850c0",  2, "transparent", 15, 143, 790, 363)
+    scroll_bar = CTkScrollbar(result_frame, command=result_frame) 
+    scroll_bar.bind(command=label)
+    scroll_bar.place(x = 700)
 
     def on_search_animal_btn_click():
         for label in result_frame.winfo_children():
@@ -513,7 +519,7 @@ def class_page():
     search_btn = createSearchButton(class_frame, on_class_search_click)
 
     label = createSearchResultLabel(class_frame, _isafterclasspage = True)
-
+#SELECT* FROM animal_details WHERE name LIKE "%an%" 
 def order_page():
 
     order_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
@@ -525,29 +531,14 @@ def order_page():
     result_frame = createFrame(order_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
 
     search = createSearchEntry(order_frame)
-    contents = StringVar()
-    contents.set("Search For Orders")
-    search["textvariable"] = contents
 
     def on_order_page_search_btn_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-        else:
-            for label in result_frame.winfo_children():
-                label.destroy()
-            ypos = 10
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder = '"+tosearch+"' "):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
+        ypos = 10
+        tosearch = ((search.get())).title()
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder = '"+tosearch+"' AND active = 1"):
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
+            label.place(x = 10, y = ypos)
+            ypos = ypos + 27
  
     search_btn = createSearchButton(order_frame, on_order_page_search_btn_click)
 
@@ -562,24 +553,14 @@ def family_page():
     label = createSearchByLabel(family_frame)
 
     search = createSearchEntry(family_frame)
-    contents = StringVar()
-    contents.set("Search For Family.")
-    search["textvariable"] = contents
 
     def on_family_page_search_btn_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-        else:
-            ypos = 170
-            for label in result_frame.winfo_children():
-                #label.destroy()
-                pass
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family = '"+tosearch+"' "):
-                label = CTkLabel(family_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
-
+        ypos = 10
+        tosearch = ((search.get())).title()
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family = '"+tosearch+"' AND active = 1"):
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
+            label.place(x = 10, y = ypos)
+            ypos = ypos + 27
     result_frame = createFrame(family_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
     
     search_btn =createSearchButton(family_frame, on_family_page_search_btn_click)
@@ -594,18 +575,12 @@ def genus_page():
     label = createSearchByLabel(genus_frame)
 
     def on_genus_search_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-        else:
-            ypos = 170
-            for label in result_frame.winfo_children():
-                #label.destroy()
-                pass
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus = '"+tosearch+"' "):
-                label = CTkLabel(genus_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
+        ypos = 10
+        tosearch = ((search.get())).title()
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus = '"+tosearch+"' AND active = 1"):
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
+            label.place(x = 10, y = ypos)
+            ypos = ypos + 27
 
     search = createSearchEntry(genus_frame)
     contents = StringVar()
@@ -626,18 +601,12 @@ def species_page():
     label = createSearchByLabel(species_frame)
 
     def on_species_search_click():
-        tosearch = ((contents.get())).title()
-        if tosearch[-1]!= ":":
-            tosearch = ((contents.get())).title() + ":"
-        else:
-            ypos = 170
-            for label in result_frame.winfo_children():
-                #label.destroy()
-                pass
-            for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species = '"+tosearch+"' "):
-                label = CTkLabel(species_frame, text = row, font = ("Arial" , 10, "italic" ), fg_color = "darkgrey")
-                label.place(x = 1, y = ypos)
-                ypos = ypos + 27
+        ypos = 10
+        tosearch = ((search.get())).title()
+        for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species = '"+tosearch+"' AND active = 1"):
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
+            label.place(x = 10, y = ypos)
+            ypos = ypos + 27
 
     search = createSearchEntry(species_frame)
     contents = StringVar()
@@ -976,18 +945,19 @@ def update():
     update_root.mainloop()
 
 def delete():
+    delete_btn.configure(command = enable_and_disable_btn(crud_frame, delete_btn, "disabled"))
     delete_root = CTk()
     
-    delete_width = 400
-    delete_height = 70
+    # delete_width = 400
+    # delete_height = 70
 
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
+    # screen_width = root.winfo_screenwidth()
+    # screen_height = root.winfo_screenheight()
 
-    x = (screen_width/2)-(delete_width/2)
-    y = (screen_height/2)-(delete_height/2)
+    # x = (screen_width/2)-(delete_width/2)
+    # y = (screen_height/2)-(delete_height/2)
 
-    delete_root.geometry(f"{delete_width}x{delete_height}+{int(x)}+{int(y)}")    
+    centreScreen(delete_root, root, 400, 70)    
     delete_root.iconbitmap(r"icon/favicon6.ico")
     delete_root.title("Update")
     delete_root.maxsize(width = 400, height = 70)

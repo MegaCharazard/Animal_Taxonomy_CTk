@@ -4,20 +4,22 @@ from PIL import Image
 import os
 import sqlite3
 from tkinter import messagebox
+from Global_Config import *
 
 root = CTk()
+# def centreScreen(_master,_appwidth, _appheight):
+#     app_width = _appwidth
+#     app_height = _appheight
 
-app_width = 600
-app_height = 600
+#     screen_width = root.winfo_screenwidth()
+#     screen_height = root.winfo_screenheight()
 
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
+#     x = (screen_width/2)-(app_width/2)
+#     y = (screen_height/2)-(app_height/2)
 
-x = (screen_width/2)-(app_width/2)
-y = (screen_height/2)-(app_height/2)
+#     _master.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
-root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
-
+centreScreen(root, root,600,600)
 root.title("Animal Taxonomy")
 root.maxsize(width = 600, height = 600)
 
@@ -58,8 +60,7 @@ def redirect_to_user(_isadmin = False):
         login_text = "LOGIN"
         global login
         login = CTk()
-        login.iconbitmap(r"icon/favicon6.ico")
-        login.geometry("400x200")
+        login.iconbitmap(r"icon/favicon6.ico"), root
         login.title("Admin Login")
         login.maxsize(width = 400, height = 200)
 
