@@ -36,9 +36,7 @@ def validation():
                 login.destroy()
                 call(["python", glb_current_working_directory + "/Animal_Taxonomy_CTk_Admin_Console.py"])
             admin_console()
-            #messagebox.showinfo("info", "login sucsess")
         else:
-            #messagebox.showinfo("info", "login fail")
             error_label = CTkLabel(login_frame, text = "Username or password is wrong", font = ("Bradley Hand ITC" , 15, "italic", "bold"), text_color = "red")
             error_label.place(x = 75, y = 170)
 

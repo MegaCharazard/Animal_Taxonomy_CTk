@@ -7,17 +7,6 @@ from Global_Config import *
 
 root = CTk()
 
-# app_width = 1000
-# app_height = 550
-
-# screen_width = root.winfo_screenwidth()
-# screen_height = root.winfo_screenheight()
-
-# x = (screen_width/2)-(app_width/2)
-# y = (screen_height/2)-(app_height/2)
-
-# root.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
-
 centreScreen(root, root,1000,550)
 root.title("Animal Taxonomy")
 root.maxsize(width = 1000, height = 550)
@@ -27,6 +16,8 @@ set_appearance_mode("Dark")
 con = sqlite3.connect("Animal_Taxonomy_Db.db", timeout = 3)
 
 cur = con.cursor()
+
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=GLOBALS=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 global glb_top_position, \
     glb_crud_frame_width, glb_crud_frame_height, \
@@ -56,7 +47,6 @@ is_add_btn_enabled = "normal"
 is_edit_btn_enabled = "normal" 
 is_delete_btn_enabled = "normal"
 
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypos = 0 , _width = 100, _height = 100, _is_content_frame = False):
     global glb_top_position
     if _is_content_frame :
@@ -144,8 +134,7 @@ def createSearchEntry(_frame, _ishomepage = False):
         tmp_Entry.place(x = 15, y = 105)
         return tmp_Entry
 
-
-
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 def home_page():
     home_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
@@ -156,7 +145,6 @@ def home_page():
 
     global radio_value
     def radio_value():
-        #print(home_radio_val.get())
         pass
 
     home_radio_val = StringVar(value = "other")
@@ -362,14 +350,12 @@ def phylum_page():
 
     def combo_get_value(combo_value):
         tosearch = combo_value
-        print(tosearch)
     
         def on_pylum_search_btn_click():
             for label in result_frame.winfo_children():
                 label.destroy()
             ypos = 10 
             #tosearch = tosearch.title()
-            print(tosearch)
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1 "):
                 label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
                 label.place(x = 10, y = ypos)
@@ -383,7 +369,6 @@ def phylum_page():
 
     def radio_value():
         val_of_phylum = home_radio_val.get()
-        print(val_of_phylum)
         #pass
         if val_of_phylum == "":
             label = CTkLabel(phylum_frame, text = "! Please Choose An Option !",font = ("Brush Script MT" , 15, "italic" ),
@@ -478,17 +463,6 @@ def phylum_page():
     
     combo = CTkComboBox(phylum_frame, width = 640)
     combo.place(x = 10, y = 130)
-    
-    # def on_pylum_search_btn_click():
-    #     for label in result_frame.winfo_children():
-    #         label.destroy()
-    #     ypos = 10 
-    #     #tosearch = tosearch.title()
-    #     print(tosearch)
-    #     for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1 "):
-    #         label = CTkLabel(result_frame, text = row,font = ("Arial" , 10, "italic" ), text_color = "#FFCC70")
-    #         label.place(x = 1, y = ypos)
-    #         ypos = ypos + 27
 
 
     global search_btn
@@ -505,10 +479,6 @@ def class_page():
     result_frame = createFrame(class_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
 
     search = createSearchEntry(class_frame)
-    # global contents
-    # contents = StringVar()
-    # contents.set("Search For Classes.")
-    # search["textvariable"] = contents
 
     def on_class_search_click():
         tosearch = ((search.get())).title()
@@ -523,7 +493,7 @@ def class_page():
     search_btn = createSearchButton(class_frame, on_class_search_click)
 
     label = createSearchResultLabel(class_frame, _isafterclasspage = True)
-#SELECT* FROM animal_details WHERE name LIKE "%an%" 
+
 def order_page():
 
     order_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
