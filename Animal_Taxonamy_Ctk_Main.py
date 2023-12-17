@@ -7,17 +7,6 @@ from tkinter import messagebox
 from Global_Config import *
 
 root = CTk()
-# def centreScreen(_master,_appwidth, _appheight):
-#     app_width = _appwidth
-#     app_height = _appheight
-
-#     screen_width = root.winfo_screenwidth()
-#     screen_height = root.winfo_screenheight()
-
-#     x = (screen_width/2)-(app_width/2)
-#     y = (screen_height/2)-(app_height/2)
-
-#     _master.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
 centreScreen(root, root,600,600)
 root.title("Animal Taxonomy")
@@ -110,6 +99,9 @@ content_frame = CTkFrame(root, border_color = "#FFCC70", border_width = 2, width
 
 welcome_message = CTkLabel(content_frame, text = welcome_text, font = ("Brush Script MT" , 50, "italic" ))
 welcome_message.place(x = (600/2-len(welcome_text)//2)-100, y = 200)
+
+welcome_message = CTkLabel(content_frame, text = "To the world of animals", font = ("Brush Script MT" , 18, "italic" ))
+welcome_message.place(x = (600/2-len(welcome_text)//2)-50, y = 280)
 
 guest_mode_btn = CTkButton(content_frame, text = "View As A Guest...", fg_color = "dodgerblue3",hover_color = "#c850c0",corner_radius = 35,
                                width = 240, command = lambda :(redirect_to_user()))
