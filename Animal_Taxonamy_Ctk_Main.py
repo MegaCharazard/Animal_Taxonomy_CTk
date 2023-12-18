@@ -28,7 +28,7 @@ def validation():
         username_entry.configure(border_color = "red")
         password_entry.configure(border_color = "red")
     else :
-        tmp_qry = "SELECT Username, Password FROM User_details WHERE Username = '"+username+"' AND Password = '"+password+"'"
+        tmp_qry = "SELECT Username, Password FROM User_details WHERE Username = '"+username+"' AND Password = '"+password+"' AND Active = 1"
         cur.execute(tmp_qry) 
         row  = cur.fetchone()
         if row :

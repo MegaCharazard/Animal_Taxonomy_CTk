@@ -888,7 +888,6 @@ def update():
 
 def delete():
     #root.configure(command = enable_and_disable_btn(crud_frame, delete_btn, "disabled"))
-    
     delete_root = CTk()
     centreScreen(delete_root, root, 400, 70)
     delete_root.iconbitmap(r"icon/favicon6.ico")
@@ -933,6 +932,7 @@ def delete():
     def on_delete_entry_click():
         delete_root.destroy()
         delete_entry_root = CTk()
+
         centreScreen(delete_entry_root, root, 400, 70)
         delete_entry_root.iconbitmap(r"icon/favicon6.ico")
         delete_entry_root.title("Delete")
@@ -978,6 +978,7 @@ menu_frame = CTkFrame(root, fg_color = "transparent")
 
 crud_frame = createFrame(menu_frame, "dodgerblue3",  border_line_size_2, glb_fg_color_transparent , 5, 5, 150, glb_crud_frame_height)
 
+global insert_btn, edit_btn, delete_btn, back_btn
 
 insert_btn = createImageButton(crud_frame, "", "add.png", 100, add, 25, 8)
 
