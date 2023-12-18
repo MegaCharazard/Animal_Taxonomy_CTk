@@ -17,7 +17,7 @@ con = sqlite3.connect("Animal_Taxonomy_Db.db", timeout = 3)
 
 cur = con.cursor()
 
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=GLOBALS=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=GLOBALS=-=-=-=-=-=-=-=-=-=-=-=-=-=-#
 
 global glb_top_position, \
     glb_crud_frame_width, glb_crud_frame_height, \
@@ -134,6 +134,12 @@ def createSearchEntry(_frame, _ishomepage = False):
         tmp_Entry.place(x = 15, y = 105)
         return tmp_Entry
 
+def createScrollableFrame(_frame, _width, _height, _xpos, _ypos):
+    tmp_ScrollableFrame = CTkScrollableFrame(_frame,width=_width, height=_height, border_color="#c850c0", 
+                                      border_width=2, fg_color="transparent", scrollbar_button_hover_color= "dodgerblue3")
+    tmp_ScrollableFrame.place(x = _xpos, y = _ypos)
+    return tmp_ScrollableFrame
+
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 def home_page():
@@ -165,81 +171,81 @@ def home_page():
 
     search_species_btn = createRadioButton (home_frame ,"SPECIES", "species" , home_radio_val, radio_value, 570, 100)
 
-    result_frame = createFrame(home_frame,  "#c850c0",  2, "transparent", 15, 173, 790, 333)
+    result_frame = createScrollableFrame(home_frame, 762, 318, 15, 173)
 
     def on_home_search_btn_click():
         tosearch = ((search.get())).title()
         if home_radio_val.get() == "name":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  name LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos) 
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom") 
+                
 
         elif home_radio_val.get() == "kingdom":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "phylum":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "class":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "naturalorder":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "family":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "genus":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus LIKE '%"+tosearch+"%'AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         elif home_radio_val.get() == "species":
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
     label = createSearchResultLabel(home_frame)
 
@@ -255,22 +261,18 @@ def kingdom_page():
 
     label = createSearchByLabel(kingdom_frame)
 
-    result_frame = createFrame(kingdom_frame,  "#c850c0",  2, "transparent", 15, 143, 790, 363)
-    scroll_bar = CTkScrollbar(result_frame, command=result_frame) 
-    scroll_bar.bind(command=label)
-    scroll_bar.place(x = 700)
+    result_frame = createScrollableFrame(kingdom_frame, 760, 348, 15, 143)
 
     def on_search_animal_btn_click():
         for label in result_frame.winfo_children():
             label.destroy()
         tosearch = "Animalia"
-        ypos = 10 
+        
         tmp_qry = "SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%' AND active = 1"
         record_set = cur.execute(tmp_qry)
         for row in record_set:
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27 
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
 
     search_animal_btn = CTkButton(kingdom_frame, text = "ANIMALS", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
                                   command = lambda:(on_search_animal_btn_click()))
@@ -281,11 +283,9 @@ def kingdom_page():
         for label in result_frame.winfo_children():
             label.destroy()
         tosearch = "Plantae"
-        ypos = 11 
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
-            label.place(x = 10, y = ypos) 
-            ypos = ypos + 27 
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
 
     search_plant_btn = CTkButton(kingdom_frame, text = "PLANT", fg_color = "dodgerblue3",hover_color = "#c850c0",  corner_radius = 40,
                                  command = lambda:(on_search_plant_btn_click()))
@@ -296,11 +296,11 @@ def kingdom_page():
         for label in result_frame.winfo_children():
             label.destroy()
         tosearch = "Fungi"
-        ypos = 10 
+        
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
-            label.place(x = 10, y = ypos) 
-            ypos = ypos + 27 
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
 
     search_fungi_btn = CTkButton(kingdom_frame, text = "FUNGI", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
                                      command = lambda:(on_search_fungi_btn_click()))
@@ -311,11 +311,11 @@ def kingdom_page():
         for label in result_frame.winfo_children():
             label.destroy()
         tosearch = "Protista"
-        ypos = 10 
+        
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
-            label.place(x = 10, y = ypos) 
-            ypos = ypos + 27 
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
     
     search_protista_btn = CTkButton(kingdom_frame, text = "PROTISTA", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
                                      command = lambda:(on_search_protista_btn_click()))
@@ -326,11 +326,11 @@ def kingdom_page():
         for label in result_frame.winfo_children():
             label.destroy()
         tosearch = "Monera"
-        ypos = 10 
+        
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
-            label.place(x = 10, y = ypos) 
-            ypos = ypos + 27 
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
 
     search_monera_btn = CTkButton(kingdom_frame, text = "MONERA", fg_color = "dodgerblue3",hover_color = "#c850c0",  corner_radius = 40,
                                      command = lambda:(on_search_monera_btn_click()))
@@ -354,18 +354,15 @@ def phylum_page():
         def on_pylum_search_btn_click():
             for label in result_frame.winfo_children():
                 label.destroy()
-            ypos = 10 
-            #tosearch = tosearch.title()
+            
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1 "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 15, "italic" ), text_color = "#FFCC70")
-                label.place(x = 10, y = ypos)
-                ypos = ypos + 27
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label.pack(padx = 10, pady = 10, side = "bottom")
+                
 
         search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40, 
                             command = on_pylum_search_btn_click)
         search_btn.place(x = 660, y = 130)
-
-
 
     def radio_value():
         val_of_phylum = home_radio_val.get()
@@ -446,7 +443,6 @@ def phylum_page():
     global home_radio_val
     home_radio_val = StringVar(value = "other")
 
-
     search_phylum_animal_menu =createRadioButton (phylum_frame ,"Animal", "Animalia" , home_radio_val, radio_value, 10, 100)
 
     search_phylum_plant_menu =createRadioButton (phylum_frame ,"Plant", "Plantae" , home_radio_val, radio_value, 85, 100)
@@ -457,7 +453,7 @@ def phylum_page():
 
     search_phylum_monera_menu =createRadioButton (phylum_frame ,"Monera", "Monera" , home_radio_val, radio_value, 295, 100)
 
-    result_frame = createFrame(phylum_frame,  "#c850c0",  2, "transparent", 15, 173, 790, 333)
+    result_frame = createScrollableFrame(phylum_frame, 762, 318, 15, 173)
 
     label = createSearchResultLabel(phylum_frame)
     
@@ -476,7 +472,7 @@ def class_page():
     label = createMainHeading(class_frame, "CLASS")
     label = createSearchByLabel(class_frame)
 
-    result_frame = createFrame(class_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
+    result_frame = createScrollableFrame(class_frame, 762, 335, 15, 153)
 
     search = createSearchEntry(class_frame)
 
@@ -486,9 +482,9 @@ def class_page():
             label.destroy()
         ypos = 10
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class LIKE '%"+tosearch+"%' "):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ), text_color = "#FFCC70" )
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70" )
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
  
     search_btn = createSearchButton(class_frame, on_class_search_click)
 
@@ -502,7 +498,7 @@ def order_page():
 
     label = createSearchByLabel(order_frame)
 
-    result_frame = createFrame(order_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
+    result_frame = createScrollableFrame(order_frame, 762, 335, 15, 153)
 
     search = createSearchEntry(order_frame)
 
@@ -510,9 +506,9 @@ def order_page():
         ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
  
     search_btn = createSearchButton(order_frame, on_order_page_search_btn_click)
 
@@ -529,13 +525,12 @@ def family_page():
     search = createSearchEntry(family_frame)
 
     def on_family_page_search_btn_click():
-        ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27
-    result_frame = createFrame(family_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+
+    result_frame = createScrollableFrame(family_frame, 762, 335, 15, 153)
     
     search_btn =createSearchButton(family_frame, on_family_page_search_btn_click)
     label = createSearchResultLabel(family_frame, _isafterclasspage = True)
@@ -549,19 +544,18 @@ def genus_page():
     label = createSearchByLabel(genus_frame)
 
     def on_genus_search_click():
-        ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
 
     search = createSearchEntry(genus_frame)
     contents = StringVar()
     contents.set("Search For Genus.")
     search["textvariable"] = contents
     
-    result_frame = createFrame(genus_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
+    result_frame = createScrollableFrame(genus_frame, 762, 335, 15, 153)
 
     search_btn = createSearchButton(genus_frame, on_genus_search_click)
 
@@ -578,16 +572,16 @@ def species_page():
         ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 15, "italic" ),text_color="#FFCC70")
-            label.place(x = 10, y = ypos)
-            ypos = ypos + 27
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label.pack(padx = 10, pady = 10, side = "bottom")
+            
 
     search = createSearchEntry(species_frame)
     contents = StringVar()
     contents.set("Search For Species.")
     search["textvariable"] = contents
     
-    result_frame = createFrame(species_frame,  "#c850c0",  2, "transparent", 15, 153, 790, 353)
+    result_frame = createScrollableFrame(species_frame, 762, 335, 15, 153)
 
     search_btn =createSearchButton(species_frame, on_species_search_click)
     label = createSearchResultLabel(species_frame, _isafterclasspage = True)
@@ -626,6 +620,7 @@ def delete_pages():
     for frame in main_frame.winfo_children():
         frame.destroy()
 
+
 def back_to_main_console():
     root.destroy()
     call(["python", glb_current_working_directory + "/Animal_Taxonamy_Ctk_Main.py"])
@@ -634,7 +629,7 @@ menu_frame = CTkFrame(root, fg_color = "transparent")
 
 crud_frame = createFrame(menu_frame, "",  border_line_size_2, glb_fg_color_transparent , 5, 5, 150, glb_crud_frame_height)
 
-back_btn = createImageButton(crud_frame, "", "previous.png", 100, back_to_main_console, 10, 10)
+back_btn = createImageButton(crud_frame, "", "previous.png", 100, back_to_main_console, 5, 5)
 
 home_btn = createMenuButton(menu_frame, "Home", indicate, home_page, crud_frame)
 
