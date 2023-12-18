@@ -47,7 +47,8 @@ def redirect_to_user(_isadmin = False):
         login_text = "LOGIN"
         global login
         login = CTk()
-        login.iconbitmap(r"icon/favicon6.ico"), root
+        login.iconbitmap(r"icon/favicon6.ico")
+        centreScreen(login, root,400,200)
         login.title("Admin Login")
         login.maxsize(width = 400, height = 200)
 
