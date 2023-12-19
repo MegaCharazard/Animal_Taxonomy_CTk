@@ -19,8 +19,5 @@ def centreScreen(_master,_root,_appwidth, _appheight):
 
     _master.geometry(f"{app_width}x{app_height}+{int(x)}+{int(y)}")
 
-def enable_and_disable_btn(_master, _btn_name, _state):
-    if _state == "disabled":
-        _btn_name.configure(_master, state = "disabled")
-    elif _state == "normal":
-        _btn_name.configure(_master, state = "normal")
+def activateButton(_master, _btn_name, _state):
+        _btn_name.configure(_master, state = _state)

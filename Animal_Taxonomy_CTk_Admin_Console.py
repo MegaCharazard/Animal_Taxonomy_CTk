@@ -141,6 +141,322 @@ def createScrollableFrame(_frame, _width, _height, _xpos, _ypos):
     return tmp_ScrollableFrame
 
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+def add_page():
+    
+    add_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    label = CTkLabel(add_frame, text = "ADD",font = ("Bradley Hand ITC" , 50, "italic", "bold" ), fg_color = "transparent", text_color = "#c850c0")
+    label.place(x = 330, y = 5)
+
+    label = CTkLabel(add_frame, text = "Add Admin :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "#c850c0")
+    label.place(x = glb_common_xpos, y = 70)
+
+    user_name_label = CTkLabel(add_frame, text = "Username:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    user_name_label.place(x = glb_common_xpos, y = 105)
+
+    user_name_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    user_name_entry.place(x = 200, y = 105)
+
+    password_label = CTkLabel(add_frame, text = "Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    password_label.place(x = glb_common_xpos, y = 135)
+
+    password_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600, show = "*")
+    password_entry.place(x = 200, y = 135)
+
+    re_password_label = CTkLabel(add_frame, text = "Confirm Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    re_password_label.place(x = glb_common_xpos, y = 165)
+
+    re_password_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600, show = "*")
+    re_password_entry.place(x = 200, y =165)
+    
+    def insert_admin():
+        _username = user_name_entry.get()
+        _password = password_entry.get()
+        _repassword = re_password_entry.get()
+
+        tmp_qry ="SELECT Username FROM User_details WHERE Username= '"+_username+"'AND Active = 1"
+        cur.execute(tmp_qry)
+        row = cur.fetchone()
+
+        if _password != _repassword:
+            errorlabel = CTkLabel(add_frame, text = "Passwords Don't Match", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 570, y = 200)
+            password_entry.configure(border_color = "red")
+            re_password_entry.configure(border_color = "red")
+
+        elif _username =="" or _password =="" or _repassword =="":
+            errorlabel = CTkLabel(add_frame, text = "Blanks Are Not Allowed", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 570, y = 200)
+            user_name_entry.configure(border_color = "red")
+            password_entry.configure(border_color = "red")
+            re_password_entry.configure(border_color = "red")
+
+        elif row :
+            errorlabel = CTkLabel(add_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 570, y = 200)
+            user_name_entry.configure(border_color = "border_color")
+            password_entry.configure(border_color = "border_color")
+            re_password_entry.configure(border_color = "border_color")
+
+        else:
+            errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Green" )
+            errorlabel.place(x = 570, y = 200)
+            user_name_entry.configure(border_color = "")
+            password_entry.configure(border_color = "")
+            re_password_entry.configure(border_color = "")
+            
+            cur.execute("INSERT INTO User_details (Username, Password) VALUES (?,?)",(_username, _password))
+            
+            con.commit()
+
+    insert_btn = createButton(add_frame, "Insert", 40, insert_admin, 330, 200)
+
+    label = CTkLabel(add_frame, text = "Add Entry :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "#c850c0")
+    label.place(x = glb_common_xpos, y = 200)
+
+    name_label = CTkLabel(add_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_label.place(x = glb_common_xpos, y = 235)
+
+    name_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    name_entry.place(x = 200, y = 235)
+
+    kingdom_label = CTkLabel(add_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    kingdom_label.place(x = glb_common_xpos, y = 265)
+
+    kingdom_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    kingdom_entry.place(x = 200, y = 265)
+
+    phylum_label = CTkLabel(add_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    phylum_label.place(x = glb_common_xpos, y = 295)
+
+    phylum_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    phylum_entry.place(x = 200, y = 295)
+
+    class_label = CTkLabel(add_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    class_label.place(x = glb_common_xpos, y = 325)
+
+    class_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    class_entry.place(x = 200, y = 325)
+
+    order_label = CTkLabel(add_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    order_label.place(x = glb_common_xpos, y = 355)
+
+    order_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    order_entry.place(x = 200, y = 355)
+
+    family_label = CTkLabel(add_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    family_label.place(x = glb_common_xpos, y = 385)
+
+    family_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    family_entry.place(x = 200, y = 385)
+
+    genus_label = CTkLabel(add_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    genus_label.place(x = glb_common_xpos, y = 415)
+
+    genus_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    genus_entry.place(x = 200, y = 415)
+
+    species_label = CTkLabel(add_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    species_label.place(x = glb_common_xpos, y = 445)
+
+    species_entry = CTkEntry(add_frame, text_color = "#c850c0", width = 600)
+    species_entry.place(x = 200, y = 445)
+    
+    def insert():
+        _name = name_entry.get().title()
+        _kingdom = kingdom_entry.get().title()
+        _phylum = phylum_entry.get().title()
+        _class = class_entry.get().title()
+        _order = order_entry.get().title()
+        _family = family_entry.get().title()
+        _genus = genus_entry.get().title()
+        _species = species_entry.get().title()
+
+        cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
+                    (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
+        con.commit()
+
+    insert_btn = createButton(add_frame, "Insert", 40, insert, 330, 480)
+
+def update_page():
+    update_root = CTk()
+    update_root.iconbitmap(r"icon/favicon6.ico")
+    update_root.title("Update")
+    update_root.maxsize(width = 400, height = 320)
+
+    update_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 320)
+    centreScreen(update_root, root, 400, 320)
+    update_root.iconbitmap(r"icon/favicon6.ico")
+    update_root.maxsize(width = 400, height = 320)
+
+    add_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 320)
+    add_frame.pack()
+    
+
+    name_update_label = CTkLabel(add_frame, text = "Name Of Animal:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_update_label.place(x = 5, y = 5)
+
+    name_update_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    name_update_entry.place(x = 200, y = 5)
+
+    name_label = CTkLabel(add_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    name_label.place(x = 5, y = 35)
+
+    name_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    name_entry.place(x = 200, y = 35)
+    
+    kingdom_label = CTkLabel(add_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    kingdom_label.place(x = 5, y = 65)
+
+    kingdom_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    kingdom_entry.place(x = 200, y = 65)
+
+    phylum_label = CTkLabel(add_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    phylum_label.place(x = 5, y = 95)
+
+    phylum_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    phylum_entry.place(x = 200, y = 95)
+
+    class_label = CTkLabel(add_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    class_label.place(x = 5, y = 125)
+
+    class_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    class_entry.place(x = 200, y = 125)
+
+    order_label = CTkLabel(add_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    order_label.place(x = 5, y = 155)
+
+    order_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    order_entry.place(x = 200, y = 155)
+
+    family_label = CTkLabel(add_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    family_label.place(x = 5, y = 185)
+
+    family_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    family_entry.place(x = 200, y = 185)
+
+    genus_label = CTkLabel(add_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    genus_label.place(x = 5, y = 215)
+
+    genus_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    genus_entry.place(x = 200, y = 215)
+
+    species_label = CTkLabel(add_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+    species_label.place(x = 5, y = 245)
+
+    species_entry = CTkEntry(add_frame, text_color = "#c850c0")
+    species_entry.place(x = 200, y = 245)
+    
+    def update():
+        _nametoupdate = name_update_entry.get().title()
+        _name = name_entry.get().title()
+        _kingdom = kingdom_entry.get().title()
+        _phylum = phylum_entry.get().title()
+        _class = class_entry.get().title()
+        _order = order_entry.get().title()
+        _family = family_entry.get().title()
+        _genus = genus_entry.get().title()
+        _species = species_entry.get().title()
+
+        cur.execute("UPDATE animal_details SET name = '"+_name+"', kingdom = '"+_kingdom+"', phylum = '"+_phylum+"', class = '"+_class+"',naturalorder = '"+_order+"', family = '"+_family+"', genus = '"+_genus+"', species = '"+_species+"' , active = 0 WHERE name = '"+_nametoupdate+"' AND active = 1")  
+        con.commit()
+
+    update_btn = createButton(add_frame, "Update", 40, update, 40, 280)
+
+    def back_to_admin_console():
+        update_root.destroy()
+
+    back_btn = createButton(add_frame, "Back", 40, back_to_admin_console, 210, 280)
+
+    update_frame.pack()
+    update_root.mainloop()
+
+def delete_page():
+    delete_root = CTk()
+    centreScreen(delete_root, root, 400, 70)
+    delete_root.iconbitmap(r"icon/favicon6.ico")
+    delete_root.title("Delete")
+    delete_root.maxsize(width = 400, height = 70)   
+    delete_frame = CTkFrame(delete_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+    delete_frame.pack()
+ 
+    def on_delete_admin_click():
+        delete_root.destroy()
+        delete_admin_root = CTk()
+        centreScreen(delete_admin_root, root, 400, 70)
+        delete_admin_root.iconbitmap(r"icon/favicon6.ico")
+        delete_admin_root.title("Delete")
+        delete_admin_root.maxsize(width = 400, height = 70)   
+
+        delete_entry_frame = CTkFrame(delete_admin_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+        delete_entry_frame.pack()
+
+        username_label = CTkLabel(delete_admin_root, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        username_label.place(x = 5, y = 5)
+
+        username_entry = CTkEntry(delete_admin_root, text_color = "#c850c0")
+        username_entry.place(x = 170, y = 5)
+        
+        def delete():
+            _name = username_entry.get()
+
+            cur.execute("UPDATE User_details set active = 0 WHERE Username = '"+_name+"'")
+            con.commit()
+    
+        delete_btn = createButton(delete_admin_root, "Delete", 40, delete, 40, 40)
+
+        def back_to_admin_console():
+            delete_btn.configure(state = "normal")
+            delete_admin_root.destroy()
+
+        back_btn = createButton(delete_admin_root, "Back", 40, back_to_admin_console, 210, 40)
+
+        delete_admin_root.mainloop()
+
+
+    def on_delete_entry_click():
+        delete_root.destroy()
+        delete_entry_root = CTk()
+        centreScreen(delete_entry_root, root, 400, 70)
+        delete_entry_root.iconbitmap(r"icon/favicon6.ico")
+        delete_entry_root.title("Delete")
+        delete_entry_root.maxsize(width = 400, height = 70)   
+
+        delete_entry_frame = CTkFrame(delete_entry_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
+        delete_entry_frame.pack()
+
+        name_label = CTkLabel(delete_entry_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
+        name_label.place(x = 5, y = 5)
+
+        name_entry = CTkEntry(delete_entry_frame, text_color = "#c850c0")
+        name_entry.place(x = 170, y = 5)
+        
+        def delete():
+            _name = name_entry.get()
+
+            cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
+            con.commit()
+    
+        insert_btn = createButton(delete_entry_root, "Delete", 40, delete, 40, 40)
+
+
+        def back_to_admin_console():
+            delete_btn.configure(state = "normal")
+            delete_entry_root.destroy()
+
+        back_btn = createButton(delete_entry_root, "Back", 40, back_to_admin_console, 210, 40)
+
+        delete_entry_root.mainloop()
+
+    
+    delete_admin_btn = createButton (delete_frame , "Delete Admin",40, on_delete_admin_click, 40, 30 )
+
+    delete_entry_btn = createButton (delete_frame ,"Delete Entry", 40, on_delete_entry_click, 210, 30)
+
+    delete_root.mainloop()
 
 def home_page():
     home_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
@@ -620,351 +936,6 @@ def delete_pages():
     for frame in main_frame.winfo_children():
         frame.destroy()
 
-def add():
-    
-    add_root = CTk()
-    centreScreen(add_root, root, 400, 70)
-    add_root.iconbitmap(r"icon/favicon6.ico")
-    add_root.title("Add")
-    add_root.maxsize(width = 400, height = 70)    
-
-    add_frame = CTkFrame(add_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-    add_frame.pack()
-
-    def on_add_admin_click():
-        add_root.destroy()
-
-        add_admin = CTk()
-        centreScreen(add_admin, root, 400, 170)
-        add_admin.iconbitmap(r"icon/favicon6.ico")
-        add_admin.title("Add Admin")
-        add_admin.maxsize(width = 400, height = 170)
-
-        add_admin_frame = CTkFrame(add_admin, border_color = "#FFCC70", border_width = 2, width = 400, height = 170)
-        add_admin_frame.pack()
-
-        user_name_label = CTkLabel(add_admin_frame, text = "Username:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        user_name_label.place(x = 5, y = 5)
-
-        user_name_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
-        user_name_entry.place(x = 200, y = 5)
-
-        password_label = CTkLabel(add_admin_frame, text = "Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        password_label.place(x = 5, y = 35)
-
-        password_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
-        password_entry.place(x = 200, y = 35)
-
-        re_password_label = CTkLabel(add_admin_frame, text = "Confirm Password:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        re_password_label.place(x = 5, y = 65)
-
-        re_password_entry = CTkEntry(add_admin_frame, text_color = "#c850c0")
-        re_password_entry.place(x = 200, y = 65)
-        
-        def insert_admin():
-            _username = user_name_entry.get()
-            _password = password_entry.get()
-            _repassword = re_password_entry.get()
-
-            tmp_qry ="SELECT Username FROM User_details WHERE Username= '"+_username+"'AND Active = 1"
-            cur.execute(tmp_qry)
-            row = cur.fetchone()
-
-            if _password != _repassword:
-                errorlabel = CTkLabel(add_admin_frame, text = "Passwords Don't Match", font = ("Arial", 12, "italic", "bold"),
-                                 fg_color = "transparent", text_color = "Red" )
-                errorlabel.place(x = 110, y = 125)
-
-            if row :
-                errorlabel = CTkLabel(add_admin_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
-                                 fg_color = "transparent", text_color = "Red" )
-                errorlabel.place(x = 140, y = 125)
-
-            else:
-                errorlabel = CTkLabel(add_admin_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
-                                 fg_color = "transparent", text_color = "Green" )
-                errorlabel.place(x = 145, y = 125)
-                
-                cur.execute("INSERT INTO User_details (Username, Password) VALUES (?,?)",(_username, _password))
-                
-                con.commit()
-
-        insert_btn = createButton(add_admin_frame, "Insert", 40, insert_admin, 40, 105)
-
-        def back_to_admin_console():
-            add_admin.destroy()
-
-        back_btn = createButton(add_admin_frame, "Back", 40, back_to_admin_console, 210, 105)
-        
-        add_admin.mainloop()
-
-    def on_add_entry_click():
-        
-        add_root.destroy()
-        insert_root = CTk()
-        centreScreen(insert_root, root, 400, 300)
-        insert_root.iconbitmap(r"icon/favicon6.ico")
-        insert_root.title("Add Entry")
-        insert_root.maxsize(width = 400, height = 300)
-
-        insert_frame = CTkFrame(insert_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-        insert_frame.pack()
-
-        name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        name_label.place(x = 5, y = 5)
-
-        name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        name_entry.place(x = 170, y = 5)
-
-        kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        kingdom_label.place(x = 5, y = 35)
-
-        kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        kingdom_entry.place(x = 170, y = 35)
-
-        phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        phylum_label.place(x = 5, y = 65)
-
-        phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        phylum_entry.place(x = 170, y = 65)
-
-        class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        class_label.place(x = 5, y = 95)
-
-        class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        class_entry.place(x = 170, y = 95)
-
-        order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        order_label.place(x = 5, y = 125)
-
-        order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        order_entry.place(x = 170, y = 125)
-
-        family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        family_label.place(x = 5, y = 155)
-
-        family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        family_entry.place(x = 170, y = 155)
-
-        genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        genus_label.place(x = 5, y = 185)
-
-        genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        genus_entry.place(x = 170, y = 185)
-
-        species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        species_label.place(x = 5, y = 215)
-
-        species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-        species_entry.place(x = 170, y = 215)
-        
-        def insert():
-            _name = name_entry.get().title()
-            _kingdom = kingdom_entry.get().title()
-            _phylum = phylum_entry.get().title()
-            _class = class_entry.get().title()
-            _order = order_entry.get().title()
-            _family = family_entry.get().title()
-            _genus = genus_entry.get().title()
-            _species = species_entry.get().title()
-
-            cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
-                        (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
-            con.commit()
-
-        insert_btn = createButton(insert_frame, "Insert", 40, insert, 40, 255)
-
-        def back_to_admin_console():
-            insert_root.destroy()
-
-        back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 255)
-
-        insert_root.mainloop()
-
-    add_admin_btn = createButton (add_frame , "Add Admin",40, on_add_admin_click, 40, 30 )
-
-    add_entry_btn = createButton (add_frame ,"Add Entry", 40, on_add_entry_click, 210, 30)
-
-    add_root.mainloop()
-    
-def update():
-    update_root = CTk()
-    update_root.iconbitmap(r"icon/favicon6.ico")
-    update_root.title("Update")
-    update_root.maxsize(width = 400, height = 320)
-
-    update_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 320)
-    centreScreen(update_root, root, 400, 320)
-    update_root.iconbitmap(r"icon/favicon6.ico")
-    update_root.maxsize(width = 400, height = 320)
-
-    insert_frame = CTkFrame(update_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 320)
-    insert_frame.pack()
-    
-
-    name_update_label = CTkLabel(insert_frame, text = "Name Of Animal:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    name_update_label.place(x = 5, y = 5)
-
-    name_update_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    name_update_entry.place(x = 200, y = 5)
-
-    name_label = CTkLabel(insert_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    name_label.place(x = 5, y = 35)
-
-    name_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    name_entry.place(x = 200, y = 35)
-    
-    kingdom_label = CTkLabel(insert_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    kingdom_label.place(x = 5, y = 65)
-
-    kingdom_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    kingdom_entry.place(x = 200, y = 65)
-
-    phylum_label = CTkLabel(insert_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    phylum_label.place(x = 5, y = 95)
-
-    phylum_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    phylum_entry.place(x = 200, y = 95)
-
-    class_label = CTkLabel(insert_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    class_label.place(x = 5, y = 125)
-
-    class_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    class_entry.place(x = 200, y = 125)
-
-    order_label = CTkLabel(insert_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    order_label.place(x = 5, y = 155)
-
-    order_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    order_entry.place(x = 200, y = 155)
-
-    family_label = CTkLabel(insert_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    family_label.place(x = 5, y = 185)
-
-    family_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    family_entry.place(x = 200, y = 185)
-
-    genus_label = CTkLabel(insert_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    genus_label.place(x = 5, y = 215)
-
-    genus_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    genus_entry.place(x = 200, y = 215)
-
-    species_label = CTkLabel(insert_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-    species_label.place(x = 5, y = 245)
-
-    species_entry = CTkEntry(insert_frame, text_color = "#c850c0")
-    species_entry.place(x = 200, y = 245)
-    
-    def update():
-        _nametoupdate = name_update_entry.get().title()
-        _name = name_entry.get().title()
-        _kingdom = kingdom_entry.get().title()
-        _phylum = phylum_entry.get().title()
-        _class = class_entry.get().title()
-        _order = order_entry.get().title()
-        _family = family_entry.get().title()
-        _genus = genus_entry.get().title()
-        _species = species_entry.get().title()
-
-        cur.execute("UPDATE animal_details SET name = '"+_name+"', kingdom = '"+_kingdom+"', phylum = '"+_phylum+"', class = '"+_class+"',naturalorder = '"+_order+"', family = '"+_family+"', genus = '"+_genus+"', species = '"+_species+"' , active = 0 WHERE name = '"+_nametoupdate+"' AND active = 1")  
-        con.commit()
-
-    update_btn = createButton(insert_frame, "Update", 40, update, 40, 280)
-
-    def back_to_admin_console():
-        update_root.destroy()
-
-    back_btn = createButton(insert_frame, "Back", 40, back_to_admin_console, 210, 280)
-
-    update_frame.pack()
-    update_root.mainloop()
-
-def delete():
-    delete_root = CTk()
-    centreScreen(delete_root, root, 400, 70)
-    delete_root.iconbitmap(r"icon/favicon6.ico")
-    delete_root.title("Delete")
-    delete_root.maxsize(width = 400, height = 70)   
-    delete_frame = CTkFrame(delete_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-    delete_frame.pack()
- 
-    def on_delete_admin_click():
-        delete_root.destroy()
-        delete_admin_root = CTk()
-        centreScreen(delete_admin_root, root, 400, 70)
-        delete_admin_root.iconbitmap(r"icon/favicon6.ico")
-        delete_admin_root.title("Delete")
-        delete_admin_root.maxsize(width = 400, height = 70)   
-
-        delete_entry_frame = CTkFrame(delete_admin_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-        delete_entry_frame.pack()
-
-        username_label = CTkLabel(delete_admin_root, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        username_label.place(x = 5, y = 5)
-
-        username_entry = CTkEntry(delete_admin_root, text_color = "#c850c0")
-        username_entry.place(x = 170, y = 5)
-        
-        def delete():
-            _name = username_entry.get()
-
-            cur.execute("UPDATE User_details set active = 0 WHERE Username = '"+_name+"'")
-            con.commit()
-    
-        delete_btn = createButton(delete_admin_root, "Delete", 40, delete, 40, 40)
-
-        def back_to_admin_console():
-            delete_btn.configure(state = "normal")
-            delete_admin_root.destroy()
-
-        back_btn = createButton(delete_admin_root, "Back", 40, back_to_admin_console, 210, 40)
-
-        delete_admin_root.mainloop()
-
-
-    def on_delete_entry_click():
-        delete_root.destroy()
-        delete_entry_root = CTk()
-        centreScreen(delete_entry_root, root, 400, 70)
-        delete_entry_root.iconbitmap(r"icon/favicon6.ico")
-        delete_entry_root.title("Delete")
-        delete_entry_root.maxsize(width = 400, height = 70)   
-
-        delete_entry_frame = CTkFrame(delete_entry_root, border_color = "#FFCC70", border_width = 2, width = 400, height = 300)
-        delete_entry_frame.pack()
-
-        name_label = CTkLabel(delete_entry_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = "dodgerblue3")
-        name_label.place(x = 5, y = 5)
-
-        name_entry = CTkEntry(delete_entry_frame, text_color = "#c850c0")
-        name_entry.place(x = 170, y = 5)
-        
-        def delete():
-            _name = name_entry.get()
-
-            cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
-            con.commit()
-    
-        insert_btn = createButton(delete_entry_root, "Delete", 40, delete, 40, 40)
-
-
-        def back_to_admin_console():
-            delete_btn.configure(state = "normal")
-            delete_entry_root.destroy()
-
-        back_btn = createButton(delete_entry_root, "Back", 40, back_to_admin_console, 210, 40)
-
-        delete_entry_root.mainloop()
-
-    
-    delete_admin_btn = createButton (delete_frame , "Delete Admin",40, on_delete_admin_click, 40, 30 )
-
-    delete_entry_btn = createButton (delete_frame ,"Delete Entry", 40, on_delete_entry_click, 210, 30)
-
-    delete_root.mainloop()
-
-
 def back_to_main_console():
     root.destroy()
     call(["python", glb_current_working_directory + "/Animal_Taxonamy_Ctk_Main.py"])
@@ -975,11 +946,11 @@ crud_frame = createFrame(menu_frame, "dodgerblue3",  border_line_size_2, glb_fg_
 
 global insert_btn, edit_btn, delete_btn, back_btn
 
-insert_btn = createImageButton(crud_frame, "", "add.png", 100, add, 25, 8)
+insert_btn = createImageButton(crud_frame, "", "add.png", 100, add_page, 25, 8)
 
-edit_btn = createImageButton(crud_frame, "", "edit_blue.png", 100, update, 85, 8)
+edit_btn = createImageButton(crud_frame, "", "edit_blue.png", 100, update_page, 85, 8)
 
-delete_btn = createImageButton(crud_frame, "", "delete.png", 100, delete, 25, 48)
+delete_btn = createImageButton(crud_frame, "", "delete.png", 100, delete_page, 25, 48)
 
 back_btn = createImageButton(crud_frame, "", "previous.png", 100, back_to_main_console, 85, 48)
 
