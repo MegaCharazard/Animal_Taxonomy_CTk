@@ -21,3 +21,5 @@ def centreScreen(_master,_root,_appwidth, _appheight):
 
 def activateButton(_master, _btn_name, _state):
         _btn_name.configure(_master, state = _state)
+
+
