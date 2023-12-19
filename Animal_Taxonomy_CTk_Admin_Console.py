@@ -269,7 +269,6 @@ def add_page():
         cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
                     (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
         con.commit()
-
     insert_btn = createButton(add_frame, "Insert", 40, insert, 430, 480)
 
 def update_page():
