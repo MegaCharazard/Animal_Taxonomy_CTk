@@ -47,9 +47,9 @@ glb_common_xpos = 15
 is_add_btn_enabled = "normal"
 is_edit_btn_enabled = "normal" 
 is_delete_btn_enabled = "normal"
-glb_color_1 = "#FFCC70"# #FFC125
+glb_color_1 = "darkorchid2"# #FFC125 #FFCC70
 glb_color_2 = "dodgerblue3"
-glb_color_3 = "#c850c0"# darkorchid2, #308014
+glb_color_3 = "#308014"# darkorchid2, #308014 #c850c0
 glb_after_time = 3000
 
 def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypos = 0 , _width = 100, _height = 100, _is_content_frame = False):
@@ -294,7 +294,7 @@ def add_page():
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
-
+ 
         else:
             errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
@@ -383,8 +383,30 @@ def update_page():
         _genus = genus_entry.get().title()
         _species = species_entry.get().title()
 
-        cur.execute("UPDATE animal_details SET name = '"+_name+"', kingdom = '"+_kingdom+"', phylum = '"+_phylum+"', class = '"+_class+"',naturalorder = '"+_order+"', family = '"+_family+"', genus = '"+_genus+"', species = '"+_species+"' , active = 0 WHERE name = '"+_nametoupdate+"' AND active = 1")  
-        con.commit()
+        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_nametoupdate+"'"
+        cur.execute(tmp_qry)
+        row = cur.fetchone()
+        
+        if row :
+            cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",(_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
+            con.commit()
+
+            cur.execute("UPDATE animal_details SET active = 0 WHERE name = '"+_nametoupdate+"'")  
+            con.commit()
+            errorlabel = CTkLabel(update_frame, text = "Sucsesfully Updated", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Green" )
+            errorlabel.place(x = 600, y = 380)
+            def refresh():
+                errorlabel.configure(text = "")
+                update_page()
+            errorlabel.after(glb_after_time, refresh)
+        else:
+            errorlabel = CTkLabel(update_frame, text = "Invalid Input", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 600, y = 380)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
 
     update_btn = createButton(update_frame, "Update", 40, update, 430, 380)
 

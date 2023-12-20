@@ -26,7 +26,8 @@ global glb_top_position, \
     glb_home_btn_xpos, glb_img_btn_heights_space, \
     glb_fg_color_transparent,\
     border_line_size_2, glb_common_xpos, glb_current_working_directory,\
-    is_add_btn_enabled, is_edit_btn_enabled, is_delete_btn_enabled
+    is_add_btn_enabled, is_edit_btn_enabled, is_delete_btn_enabled, \
+    glb_color_1, glb_color_2, glb_color_3, glb_after_time
 
 # get the current working directory
 glb_current_working_directory = os.path.dirname(os.path.realpath(__file__))
@@ -46,6 +47,10 @@ glb_common_xpos = 15
 is_add_btn_enabled = "normal"
 is_edit_btn_enabled = "normal" 
 is_delete_btn_enabled = "normal"
+glb_color_1 = "darkorchid2"# #FFC125 #FFCC70
+glb_color_2 = "dodgerblue3"
+glb_color_3 = "#308014"# darkorchid2, #308014 #c850c0
+glb_after_time = 3000
 
 def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypos = 0 , _width = 100, _height = 100, _is_content_frame = False):
     global glb_top_position
@@ -66,7 +71,7 @@ def createRadioButton (_frame ,_text , _value, _variable, _command,  _xpos, _ypo
 
 def createMenuButton (_frame, _text,  _command, _argument, _previous_control, _add_xpos = 0, _add_ypos = 0):
     global glb_menu_btn_font    
-    tmp_btn = CTkButton(_frame,text = _text ,hover_color= "#c850c0", font = glb_menu_btn_font,
+    tmp_btn = CTkButton(_frame,text = _text ,hover_color= glb_color_3, font = glb_menu_btn_font,
                          width=  glb_menu_btn_width, height= glb_menu_btn_height, command = lambda: (_command(_argument)))
     global glb_menu_btn_current_ypos 
     glb_menu_btn_current_ypos = glb_menu_btn_current_ypos + _previous_control._current_height + glb_menu_btn_ypos_space + _add_ypos
@@ -74,76 +79,79 @@ def createMenuButton (_frame, _text,  _command, _argument, _previous_control, _a
     return tmp_btn
 
 def createButton(_frame, _text, _corner_radius, _call_back_function, _xpos, _ypos):
-    tmp_btn = CTkButton(_frame,text = _text,corner_radius = _corner_radius,hover_color = "#c850c0",
+    tmp_btn = CTkButton(_frame,text = _text,corner_radius = _corner_radius,hover_color = glb_color_3,
                          height= glb_img_btn_height, command = lambda: (_call_back_function()))
     tmp_btn.place(x = _xpos, y = _ypos)
     return tmp_btn
 
-def createImageButton(_frame, _text, _image, _corner_radius, _call_back_function, _xpos, _ypos):
+def createImageButton(_frame, _text, _image, _corner_radius, _call_back_function, _argument, _xpos, _ypos):
     img = Image.open(r"Images/" + _image)
     tmp_btn = CTkButton(_frame,text = _text, image = CTkImage(dark_image=img, light_image=img),corner_radius = _corner_radius,
                          width=  glb_img_btn_width, height= glb_img_btn_height,state = "normal",
-                           command = lambda: (_call_back_function()))
+                           command = lambda: (_call_back_function(_argument)))
     tmp_btn.place(x = _xpos, y = _ypos)
     return tmp_btn
 
 def createSearchByLabel(_frame):
-    tmp_label = CTkLabel(_frame, text = "Search by :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "#c850c0")
+    tmp_label = CTkLabel(_frame, text = "Search by :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_3)
     tmp_label.place(x = glb_common_xpos, y = 70)
     return tmp_label
 
 def createSearchResultLabel(_frame, _iskingdompage = False, _isafterclasspage = False):
 
     if _iskingdompage :
-        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "dodgerblue3")
+        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_2)
         tmp_label.place(x = 15, y = 130)
         return tmp_label
     elif _isafterclasspage:
-        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "dodgerblue3")
+        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_2)
         tmp_label.place(x = 15, y = 140)
         return tmp_label
     else :
-        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "dodgerblue3")
+        tmp_label = CTkLabel(_frame, text = "Search Result(s):-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_2)
         tmp_label.place(x = 15, y = 160)
         return tmp_label
 
 def createMainHeading(_frame, _text):
-    tmp_heading = CTkLabel(_frame, text = _text,font = ("Bradley Hand ITC" , 50, "italic", "bold" ), fg_color = "transparent", text_color = "#c850c0")
+    tmp_heading = CTkLabel(_frame, text = _text,font = ("Bradley Hand ITC" , 50, "italic", "bold" ), fg_color = "transparent", text_color = glb_color_3)
     tmp_heading.place(x = 300, y = 5)
     return tmp_heading
 
 def createSearchButton(_frame, _command, _ishomepage = False):
     if _ishomepage :
-        tmp_Search_Btn = CTkButton(_frame, text = "SEARCH", fg_color = "dodgerblue3",hover_color = "#c850c0",corner_radius = 35,
+        tmp_Search_Btn = CTkButton(_frame, text = "SEARCH", fg_color = glb_color_2,hover_color = glb_color_3,corner_radius = 35,
                                 command = lambda :(_command()))
         tmp_Search_Btn.place(x = 660, y = 130)
         return tmp_Search_Btn
     else:
-        tmp_Search_Btn = CTkButton(_frame, text = "SEARCH", fg_color = "dodgerblue3",hover_color = "#c850c0",corner_radius = 35,
+        tmp_Search_Btn = CTkButton(_frame, text = "SEARCH", fg_color = glb_color_2,hover_color = glb_color_3,corner_radius = 35,
                                 command = lambda :(_command()))
         tmp_Search_Btn.place(x = 660, y = 105)
         return tmp_Search_Btn
 
 def createSearchEntry(_frame, _ishomepage = False):
     if _ishomepage :
-        tmp_Entry = CTkEntry(_frame, width = 640, text_color = "#c850c0")
+        tmp_Entry = CTkEntry(_frame, width = 640, text_color = glb_color_3)
         tmp_Entry.place(x = 15, y = 130)
         return tmp_Entry
     else:
-        tmp_Entry = CTkEntry(_frame, width = 640, text_color = "#c850c0")
+        tmp_Entry = CTkEntry(_frame, width = 640, text_color = glb_color_3)
         tmp_Entry.place(x = 15, y = 105)
         return tmp_Entry
 
 def createScrollableFrame(_frame, _width, _height, _xpos, _ypos):
-    tmp_ScrollableFrame = CTkScrollableFrame(_frame,width=_width, height=_height, border_color="#c850c0", 
-                                      border_width=2, fg_color="transparent", scrollbar_button_hover_color= "dodgerblue3")
+    tmp_ScrollableFrame = CTkScrollableFrame(_frame,width=_width, height=_height, border_color=glb_color_3, 
+                                      border_width=2, fg_color="transparent", scrollbar_button_hover_color= glb_color_2)
     tmp_ScrollableFrame.place(x = _xpos, y = _ypos)
     return tmp_ScrollableFrame
 
-#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+def destroyAfterForLabel(_widget):
+    _widget.configure("")
 
+#-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+    
 def home_page():
-    home_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    home_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(home_frame, "HOME")
 
@@ -180,7 +188,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  name LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom") 
                 
 
@@ -189,7 +197,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -198,7 +206,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -207,7 +215,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -216,7 +224,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -225,7 +233,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -234,7 +242,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus LIKE '%"+tosearch+"%'AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -243,7 +251,7 @@ def home_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species LIKE '%"+tosearch+"%' AND active = 1"):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
@@ -255,7 +263,7 @@ def home_page():
 
 def kingdom_page():
 
-    kingdom_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    kingdom_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(kingdom_frame, "KINGDOM")
 
@@ -271,10 +279,10 @@ def kingdom_page():
         tmp_qry = "SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%' AND active = 1"
         record_set = cur.execute(tmp_qry)
         for row in record_set:
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
 
-    search_animal_btn = CTkButton(kingdom_frame, text = "ANIMALS", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
+    search_animal_btn = CTkButton(kingdom_frame, text = "ANIMALS", fg_color = glb_color_2,hover_color = glb_color_3, corner_radius = 40,
                                   command = lambda:(on_search_animal_btn_click()))
     search_animal_btn.place(x = 10, y = 98)
 
@@ -284,10 +292,10 @@ def kingdom_page():
             label.destroy()
         tosearch = "Plantae"
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
 
-    search_plant_btn = CTkButton(kingdom_frame, text = "PLANT", fg_color = "dodgerblue3",hover_color = "#c850c0",  corner_radius = 40,
+    search_plant_btn = CTkButton(kingdom_frame, text = "PLANT", fg_color = glb_color_2,hover_color = glb_color_3,  corner_radius = 40,
                                  command = lambda:(on_search_plant_btn_click()))
     search_plant_btn.place(x = 158, y = 98)
 
@@ -298,11 +306,11 @@ def kingdom_page():
         tosearch = "Fungi"
         
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
 
-    search_fungi_btn = CTkButton(kingdom_frame, text = "FUNGI", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
+    search_fungi_btn = CTkButton(kingdom_frame, text = "FUNGI", fg_color = glb_color_2,hover_color = glb_color_3, corner_radius = 40,
                                      command = lambda:(on_search_fungi_btn_click()))
     search_fungi_btn.place(x = 305, y = 98)
 
@@ -313,11 +321,11 @@ def kingdom_page():
         tosearch = "Protista"
         
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
     
-    search_protista_btn = CTkButton(kingdom_frame, text = "PROTISTA", fg_color = "dodgerblue3",hover_color = "#c850c0", corner_radius = 40,
+    search_protista_btn = CTkButton(kingdom_frame, text = "PROTISTA", fg_color = glb_color_2,hover_color = glb_color_3, corner_radius = 40,
                                      command = lambda:(on_search_protista_btn_click()))
     search_protista_btn.place(x = 453, y = 98)
 
@@ -328,11 +336,11 @@ def kingdom_page():
         tosearch = "Monera"
         
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  kingdom LIKE '%"+tosearch+"%'AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), fg_color = "transparent", text_color = glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
 
-    search_monera_btn = CTkButton(kingdom_frame, text = "MONERA", fg_color = "dodgerblue3",hover_color = "#c850c0",  corner_radius = 40,
+    search_monera_btn = CTkButton(kingdom_frame, text = "MONERA", fg_color = glb_color_2,hover_color = glb_color_3,  corner_radius = 40,
                                      command = lambda:(on_search_monera_btn_click()))
     search_monera_btn.place(x = 600, y = 98)
 
@@ -342,7 +350,7 @@ def phylum_page():
     global search_result_ypos 
     search_result_ypos = 160
 
-    phylum_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    phylum_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(phylum_frame, "PHYLUM")
 
@@ -356,11 +364,11 @@ def phylum_page():
                 label.destroy()
             
             for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  phylum LIKE '%"+tosearch+"%' AND active = 1 "):
-                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = "#FFCC70")
+                label = CTkLabel(result_frame, text = row,font = ("Arial" , 14, "italic" ), text_color = glb_color_1)
                 label.pack(padx = 10, pady = 10, side = "bottom")
                 
 
-        search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40, 
+        search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = glb_color_2, hover_color = glb_color_3, corner_radius = 40, 
                             command = on_pylum_search_btn_click)
         search_btn.place(x = 660, y = 130)
 
@@ -462,12 +470,12 @@ def phylum_page():
 
 
     global search_btn
-    search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = "dodgerblue3", hover_color = "#c850c0", corner_radius = 40)
+    search_btn = CTkButton(phylum_frame, text = "SEARCH", fg_color = glb_color_2, hover_color = glb_color_3, corner_radius = 40)
     search_btn.place(x = 660, y = 130)
 
 def class_page():
 
-    class_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    class_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(class_frame, "CLASS")
     label = createSearchByLabel(class_frame)
@@ -482,7 +490,7 @@ def class_page():
             label.destroy()
         ypos = 10
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  class LIKE '%"+tosearch+"%' "):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = "#FFCC70" )
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ), text_color = glb_color_1 )
             label.pack(padx = 10, pady = 10, side = "bottom")
             
  
@@ -492,7 +500,7 @@ def class_page():
 
 def order_page():
 
-    order_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    order_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(order_frame, "ORDER")
 
@@ -506,7 +514,7 @@ def order_page():
         ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  naturalorder LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color=glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
  
@@ -516,7 +524,7 @@ def order_page():
 
 def family_page():
 
-    family_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    family_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(family_frame, "FAMILY")
 
@@ -527,7 +535,7 @@ def family_page():
     def on_family_page_search_btn_click():
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  family LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color=glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
 
     result_frame = createScrollableFrame(family_frame, 762, 335, 15, 153)
@@ -537,7 +545,7 @@ def family_page():
 
 def genus_page():
 
-    genus_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    genus_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(genus_frame, "GENUS")
 
@@ -546,7 +554,7 @@ def genus_page():
     def on_genus_search_click():
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  genus LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color=glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
 
@@ -562,7 +570,7 @@ def genus_page():
     label = createSearchResultLabel(genus_frame, _isafterclasspage = True)
 
 def species_page():
-    species_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    species_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(species_frame, "SPEICES")
 
@@ -572,7 +580,7 @@ def species_page():
         ypos = 10
         tosearch = ((search.get())).title()
         for row in cur.execute("SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE  species LIKE '%"+tosearch+"%' AND active = 1"):
-            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color="#FFCC70")
+            label = CTkLabel(result_frame, text = row, font = ("Arial" , 14, "italic" ),text_color=glb_color_1)
             label.pack(padx = 10, pady = 10, side = "bottom")
             
 
@@ -587,26 +595,27 @@ def species_page():
     label = createSearchResultLabel(species_frame, _isafterclasspage = True)
 
 def about_page():
-    about_frame = createFrame(main_frame,  "dodgerblue3",  2, "transparent", _is_content_frame = True)
+    about_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
 
     label = createMainHeading(about_frame, "ABOUT")
 
-    frame = createFrame(about_frame,  "#c850c0",  2, "transparent", 15, 70, 790, 436)
+    frame = createFrame(about_frame,  glb_color_3,  2, "transparent", 15, 70, 790, 436)
 
     label = CTkLabel(frame, text = "\
 We are a group of students studying in XI std,\n\
 <--CREDITS-->\n\
-Ideaology --> Hari Dhejus V.S.\n\
+Ideaology       --> Hari Dhejus V.S.\n\
 Cheif Devoloper --> Hari Dhejus V.S.\n\
-Co-Devoloper --> Anandha Krishnan\n\
+Co-Devoloper    --> Anandha Krishnan\n\
+Co-Devoloper    --> Dhana Lekshmi\n\
 Chief Biologist --> Pranav Krishna Prathap\n\
-Co-Biologist-1-->Adharsh S.M.\n\
-Co-Biologist2-->Akshay Ram R.F\n\
+Co-Biologist-1  --> Adharsh S.M.\n\
+Co-Biologist2   --> Akshay Ram R.F\n\
 \n\
 Contact us --> +91 948 668 3398\n\
 \n\
         Thank you for using this program © AnimalTaxonaomy HAPAA™", 
-                        font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = "#FFCC70")
+                        font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_1)
     label.place(x = 120, y = 80)
 
 
@@ -620,7 +629,6 @@ def delete_pages():
     for frame in main_frame.winfo_children():
         frame.destroy()
 
-
 def back_to_main_console():
     root.destroy()
     call(["python", glb_current_working_directory + "/Animal_Taxonamy_Ctk_Main.py"])
@@ -629,7 +637,12 @@ menu_frame = CTkFrame(root, fg_color = "transparent")
 
 crud_frame = createFrame(menu_frame, "",  border_line_size_2, glb_fg_color_transparent , 5, 5, 150, glb_crud_frame_height)
 
-back_btn = createImageButton(crud_frame, "", "previous.png", 100, back_to_main_console, 5, 5)
+
+img = Image.open(r"Images/" + "previous.png")
+back_btn =  CTkButton(crud_frame, text = "", image = CTkImage(dark_image=img, light_image=img),corner_radius = 100,
+                         width=  glb_img_btn_width, height= glb_img_btn_height,state = "normal",
+                           command = lambda: (back_to_main_console()))
+back_btn.place(x = 5, y = 5)
 
 home_btn = createMenuButton(menu_frame, "Home", indicate, home_page, crud_frame)
 
@@ -653,7 +666,7 @@ menu_frame.pack(side = "left")
 menu_frame.pack_propagate(False)
 menu_frame.configure(width = 150, height = 550)
 
-main_frame = createFrame(root,  "#FFCC70",  3, "transparent", 0 , 0, 950, 550)
+main_frame = createFrame(root,  glb_color_1,  3, "transparent", 0 , 0, 950, 550)
 main_frame.pack(side = "left")
 main_frame.pack_propagate(False)
 
