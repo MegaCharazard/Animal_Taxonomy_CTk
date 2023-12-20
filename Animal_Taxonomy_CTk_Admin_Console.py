@@ -26,7 +26,8 @@ global glb_top_position, \
     glb_home_btn_xpos, glb_img_btn_heights_space, \
     glb_fg_color_transparent,\
     border_line_size_2, glb_common_xpos, glb_current_working_directory,\
-    is_add_btn_enabled, is_edit_btn_enabled, is_delete_btn_enabled, glb_color_1, glb_color_2, glb_color_3
+    is_add_btn_enabled, is_edit_btn_enabled, is_delete_btn_enabled, \
+    glb_color_1, glb_color_2, glb_color_3, glb_after_time
 
 # get the current working directory
 glb_current_working_directory = os.path.dirname(os.path.realpath(__file__))
@@ -49,6 +50,7 @@ is_delete_btn_enabled = "normal"
 glb_color_1 = "#FFCC70"# #FFC125
 glb_color_2 = "dodgerblue3"
 glb_color_3 = "#c850c0"# darkorchid2, #308014
+glb_after_time = 3000
 
 def createFrame(_frame, _border_color, _border_width, _fg_color, _xpos = 0, _ypos = 0 , _width = 100, _height = 100, _is_content_frame = False):
     global glb_top_position
@@ -143,6 +145,9 @@ def createScrollableFrame(_frame, _width, _height, _xpos, _ypos):
     tmp_ScrollableFrame.place(x = _xpos, y = _ypos)
     return tmp_ScrollableFrame
 
+def destroyAfterForLabel(_widget):
+    _widget.configure("")
+
 #-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=PAGES=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 def add_page():
     
@@ -183,25 +188,38 @@ def add_page():
         if _password != _repassword:
             errorlabel = CTkLabel(add_frame, text = "Passwords Don't Match", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 570, y = 200)
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
 
         elif _username =="" or _password =="" or _repassword =="":
             errorlabel = CTkLabel(add_frame, text = "Blanks Are Not Allowed", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 570, y = 200)
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
+
         elif row :
             errorlabel = CTkLabel(add_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 570, y = 200)
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
 
         else:
             errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
-            errorlabel.place(x = 570, y = 200)
-            
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+                add_page()
+            errorlabel.after(glb_after_time, refresh)
             cur.execute("INSERT INTO User_details (Username, Password) VALUES (?,?)",(_username, _password))
-            
             con.commit()
+
 
     insert_btn = createButton(add_frame, "Insert", 40, insert_admin, 430, 200)
 
@@ -266,9 +284,28 @@ def add_page():
         _genus = genus_entry.get().title()
         _species = species_entry.get().title()
 
-        cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",
-                    (_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
+        tmp_qry ="SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE name = '"+_name+"' AND active = 1"
+        cur.execute(tmp_qry)
+        row = cur.fetchone()
+        if row:
+            errorlabel = CTkLabel(add_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
+                    fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
+
+        else:
+            errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Green" )
+            errorlabel.place(x = 600, y = 200)
+            def refresh():
+                errorlabel.configure(text = "")
+                add_page()
+            errorlabel.after(glb_after_time, refresh)
+        cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",(_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
         con.commit()
+
     insert_btn = createButton(add_frame, "Insert", 40, insert, 430, 480)
 
 def update_page():
