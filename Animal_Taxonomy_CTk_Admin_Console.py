@@ -284,21 +284,22 @@ def add_page():
         _genus = genus_entry.get().title()
         _species = species_entry.get().title()
 
-        tmp_qry ="SELECT name, kingdom, phylum, class, naturalorder, family, genus, species FROM animal_details WHERE name = '"+_name+"' AND active = 1"
+        tmp_qry ="SELECT name FROM animal_details WHERE name = '"+_name+"' AND active = 1"
         cur.execute(tmp_qry)
         row = cur.fetchone()
         if row:
             errorlabel = CTkLabel(add_frame, text = "This Already Exists", font = ("Arial", 12, "italic", "bold"),
                     fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 600, y = 200)
+            errorlabel.place(x = 600, y = 475)
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
+            pass
  
-        else:
+        elif row == False:
             errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
-            errorlabel.place(x = 600, y = 200)
+            errorlabel.place(x = 600, y = 475)
             def refresh():
                 errorlabel.configure(text = "")
                 add_page()
