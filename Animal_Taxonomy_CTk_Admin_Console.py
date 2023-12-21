@@ -294,9 +294,8 @@ def add_page():
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
-            pass
  
-        elif row == False:
+        else :
             errorlabel = CTkLabel(add_frame, text = "Sucsesfully Added", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
             errorlabel.place(x = 600, y = 475)
@@ -304,8 +303,8 @@ def add_page():
                 errorlabel.configure(text = "")
                 add_page()
             errorlabel.after(glb_after_time, refresh)
-        cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",(_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
-        con.commit()
+            cur.execute("INSERT INTO animal_details (name, kingdom, phylum, class, naturalorder, family, genus, species) VALUES (?,?,?,?,?,?,?,?)",(_name, _kingdom, _phylum, _class, _order, _family, _genus, _species))
+            con.commit()
 
     insert_btn = createButton(add_frame, "Insert", 40, insert, 430, 480)
 
@@ -325,56 +324,63 @@ def update_page():
     name_update_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
     name_update_entry.place(x = 200, y = 105)
 
+    species_update_label = CTkLabel(update_frame, text = "Species Of Animal:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
+    species_update_label.place(x = glb_common_xpos-5, y = 135)
+
+    species_update_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
+    species_update_entry.place(x = 200, y = 135)
+
     name_label = CTkLabel(update_frame, text = "Name :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    name_label.place(x = glb_common_xpos, y = 135)
+    name_label.place(x = glb_common_xpos, y = 165)
 
     name_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    name_entry.place(x = 200, y = 135)
+    name_entry.place(x = 200, y = 165)
     
     kingdom_label = CTkLabel(update_frame, text = "Kingdom:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    kingdom_label.place(x = glb_common_xpos, y = 165)
+    kingdom_label.place(x = glb_common_xpos, y = 195)
 
     kingdom_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    kingdom_entry.place(x = 200, y = 165)
+    kingdom_entry.place(x = 200, y = 195)
 
     phylum_label = CTkLabel(update_frame, text = "Phylum:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    phylum_label.place(x = glb_common_xpos, y = 195)
+    phylum_label.place(x = glb_common_xpos, y = 225)
 
     phylum_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    phylum_entry.place(x = 200, y = 195)
+    phylum_entry.place(x = 200, y = 225)
 
     class_label = CTkLabel(update_frame, text = "Class:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    class_label.place(x = glb_common_xpos, y = 225)
+    class_label.place(x = glb_common_xpos, y = 255)
 
     class_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    class_entry.place(x = 200, y = 225)
+    class_entry.place(x = 200, y = 255)
 
     order_label = CTkLabel(update_frame, text = "Order:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    order_label.place(x = glb_common_xpos, y = 255)
+    order_label.place(x = glb_common_xpos, y = 285)
 
     order_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    order_entry.place(x = 200, y = 255)
+    order_entry.place(x = 200, y = 285)
 
     family_label = CTkLabel(update_frame, text = "Family:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    family_label.place(x = glb_common_xpos, y = 285)
+    family_label.place(x = glb_common_xpos, y = 315)
 
     family_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    family_entry.place(x = 200, y = 285)
+    family_entry.place(x = 200, y = 315)
 
     genus_label = CTkLabel(update_frame, text = "Genus:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    genus_label.place(x = glb_common_xpos, y = 315)
+    genus_label.place(x = glb_common_xpos, y = 345)
 
     genus_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    genus_entry.place(x = 200, y = 315)
+    genus_entry.place(x = 200, y = 345)
 
     species_label = CTkLabel(update_frame, text = "Species:-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
-    species_label.place(x = glb_common_xpos, y = 345)
+    species_label.place(x = glb_common_xpos, y = 375)
 
     species_entry = CTkEntry(update_frame, text_color = glb_color_3, width = 600)
-    species_entry.place(x = 200, y = 345)
+    species_entry.place(x = 200, y = 375)
     
     def update():
         _nametoupdate = name_update_entry.get().title()
+        _speciestoupdate = species_update_entry.get().title()
         _name = name_entry.get().title()
         _kingdom = kingdom_entry.get().title()
         _phylum = phylum_entry.get().title()
@@ -384,7 +390,7 @@ def update_page():
         _genus = genus_entry.get().title()
         _species = species_entry.get().title()
 
-        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_nametoupdate+"'"
+        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_nametoupdate+"' AND species = '"+_speciestoupdate+"' AND active = 1"
         cur.execute(tmp_qry)
         row = cur.fetchone()
         
@@ -396,20 +402,20 @@ def update_page():
             con.commit()
             errorlabel = CTkLabel(update_frame, text = "Sucsesfully Updated", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
-            errorlabel.place(x = 600, y = 380)
+            errorlabel.place(x = 600, y = 415)
             def refresh():
                 errorlabel.configure(text = "")
                 update_page()
             errorlabel.after(glb_after_time, refresh)
         else:
-            errorlabel = CTkLabel(update_frame, text = "Invalid Input", font = ("Arial", 12, "italic", "bold"),
+            errorlabel = CTkLabel(update_frame, text = "No Such Animal", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 600, y = 380)
+            errorlabel.place(x = 600, y = 415)
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
 
-    update_btn = createButton(update_frame, "Update", 40, update, 430, 380)
+    update_btn = createButton(update_frame, "Update", 40, update, 430, 415)
 
 def delete_page():
 
@@ -429,9 +435,30 @@ def delete_page():
     
     def on_delete_admin_click():
         _name = username_entry.get()
+        
+        tmp_qry = "SELECT Username FROM User_details WHERE Username = '"+_name+"' AND Active = 1"
+        cur.execute(tmp_qry)
+        row = cur.fetchone()
 
-        cur.execute("UPDATE User_details set active = 0 WHERE Username = '"+_name+"'")
-        con.commit()
+        if row :
+            cur.execute("UPDATE User_details set active = 0 WHERE Username = '"+_name+"'")
+            con.commit()
+
+            errorlabel = CTkLabel(delete_frame, text = "Sucsesfully Deleted", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Green" )
+            errorlabel.place(x = 600, y = 137)
+            def refresh():
+                errorlabel.configure(text = "")
+                delete_page()
+            errorlabel.after(glb_after_time, refresh)
+        else :
+
+            errorlabel = CTkLabel(delete_frame, text = "No Such Username", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 600, y = 137)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
 
     delete_admin_btn = createButton(delete_frame, "Delete Admin", 40, on_delete_admin_click, 430, 140)
 
@@ -445,10 +472,30 @@ def delete_page():
     name_entry.place(x = 170, y = 210)
     
     def on_delete_entry_click():
-        _name = name_entry.get()
+        _name = name_entry.get().title()
 
-        cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
-        con.commit()
+        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_name+"' AND active = 1"
+        cur.execute(tmp_qry)
+        row = cur.fetchone()
+        if row :
+            cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
+            con.commit()
+
+            errorlabel = CTkLabel(delete_frame, text = "Sucsesfully Deleted", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Green" )
+            errorlabel.place(x = 600, y = 243)
+            def refresh():
+                errorlabel.configure(text = "")
+                delete_page()
+            errorlabel.after(glb_after_time, refresh)
+        else:
+
+            errorlabel = CTkLabel(delete_frame, text = "No Such Animal", font = ("Arial", 12, "italic", "bold"),
+                                fg_color = "transparent", text_color = "Red" )
+            errorlabel.place(x = 600, y = 243)
+            def refresh():
+                errorlabel.configure(text = "")
+            errorlabel.after(glb_after_time, refresh)
 
     delete_admin_btn = createButton(delete_frame, "Delete Entry", 40, on_delete_entry_click, 430, 245)
 
