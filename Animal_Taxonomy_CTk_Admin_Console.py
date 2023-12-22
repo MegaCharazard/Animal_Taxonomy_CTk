@@ -1,4 +1,5 @@
 from customtkinter import *
+from tkinter import colorchooser
 from PIL import Image
 import os 
 from subprocess import call
@@ -414,6 +415,17 @@ def update_page():
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
+    
+    def setting():
+        colorchooser_btn = colorchooser.askcolor()
+        colorchooser_btn = list(colorchooser_btn)
+        print(colorchooser_btn[-1])
+
+    img = Image.open(r"Images/" + "setting.png")
+    setting_btn = CTkButton(update_frame,text = "", image = CTkImage(dark_image=img, light_image=img),corner_radius = 42,
+                         width=  glb_img_btn_width, height= glb_img_btn_height,hover_color= glb_color_3,
+                           command = lambda: (setting()))
+    setting_btn.place(x = 15, y = 15)
 
     update_btn = createButton(update_frame, "Update", 40, update, 430, 415)
 
