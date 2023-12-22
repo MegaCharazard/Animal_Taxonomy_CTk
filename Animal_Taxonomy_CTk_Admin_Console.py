@@ -12,6 +12,7 @@ centreScreen(root, root,1000,550)
 root.title("Animal Taxonomy")
 root.maxsize(width = 1000, height = 550)
 root.iconbitmap(r"icon/favicon6.ico")
+root.minsize(width = 1000, height = 550)
 set_appearance_mode("Dark")
 
 con = sqlite3.connect("Animal_Taxonomy_Db.db", timeout = 3)
@@ -94,7 +95,7 @@ def createImageButton(_frame, _text, _image, _corner_radius, _call_back_function
     return tmp_btn
 
 def createSearchByLabel(_frame):
-    tmp_label = CTkLabel(_frame, text = "Search by :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_3)
+    tmp_label = CTkLabel(_frame, text = "Search by :-",font = ("Brush Script MT" , 20, "italic" ), fg_color = "transparent", text_color = glb_color_2)
     tmp_label.place(x = glb_common_xpos, y = 70)
     return tmp_label
 
@@ -417,9 +418,33 @@ def update_page():
             errorlabel.after(glb_after_time, refresh)
     
     def setting():
-        colorchooser_btn = colorchooser.askcolor()
-        colorchooser_btn = list(colorchooser_btn)
-        print(colorchooser_btn[-1])
+
+        color_root = CTkToplevel()
+        color_root.geometry("400x300")
+        centreScreen(color_root, root,400,300)
+        color_root.title("Costomize")
+        color_root.iconbitmap(r"icon/favicon6.ico")
+
+        color_1_frame = CTkFrame(color_root, width = 400, height = 300, border_color=glb_color_1, border_width=2, fg_color="transparent")
+        color_1_frame.pack()
+
+        color_2_frame = CTkFrame(color_1_frame, width = 370, height = 270, border_color=glb_color_2, border_width=2, fg_color="transparent")
+        color_2_frame.place(x = glb_common_xpos, y = 15)
+
+        label = CTkLabel(color_2_frame, text = "Costomize Color", text_color = glb_color_3, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
+        label.place(x = 75, y= 15)
+
+        label = createSearchByLabel(color_2_frame)
+
+        color_3_frame = CTkFrame(color_2_frame, width = 340, height = 155, border_color=glb_color_3, border_width=2, fg_color="transparent")
+        color_3_frame.place(x = glb_common_xpos, y = 100)
+
+        label = CTkLabel(color_3_frame, text = "Costomize Color", text_color = glb_color_1, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
+        label.place(x = 75, y= 15)
+
+        # colorchooser_btn = colorchooser.askcolor()
+        # colorchooser_btn = list(colorchooser_btn)
+        # print(colorchooser_btn[-1])
 
     img = Image.open(r"Images/" + "setting.png")
     setting_btn = CTkButton(update_frame,text = "", image = CTkImage(dark_image=img, light_image=img),corner_radius = 42,
