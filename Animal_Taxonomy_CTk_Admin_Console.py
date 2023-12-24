@@ -419,7 +419,7 @@ def update_page():
     
     def setting():
 
-        color_root = CTkToplevel()
+        color_root = CTk()
         color_root.geometry("400x300")
         centreScreen(color_root, root,400,300)
         color_root.title("Costomize")
@@ -434,17 +434,48 @@ def update_page():
         label = CTkLabel(color_2_frame, text = "Costomize Color", text_color = glb_color_3, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
         label.place(x = 75, y= 15)
 
-        label = createSearchByLabel(color_2_frame)
-
         color_3_frame = CTkFrame(color_2_frame, width = 340, height = 155, border_color=glb_color_3, border_width=2, fg_color="transparent")
         color_3_frame.place(x = glb_common_xpos, y = 100)
+
+        label = CTkLabel(color_2_frame, text = "Choose Color:-", text_color = glb_color_2, font = ("Bradley Hand ITC" , 20, "italic", "bold"))
+        label.place(x = 15, y= 45)
 
         label = CTkLabel(color_3_frame, text = "Costomize Color", text_color = glb_color_1, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
         label.place(x = 75, y= 15)
 
+        def radio_value():
+            if color_radio_var.get() == "color1":
+                colorchooser_btn = colorchooser.askcolor()[-1]
+                print(colorchooser_btn)
+                global glb_color_1
+                glb_color_1 = str(colorchooser_btn)
+            elif color_radio_var.get() == "color2":
+                colorchooser_btn = colorchooser.askcolor()[-1]
+                print(colorchooser_btn)
+                global glb_color_2
+                glb_color_2 = str(colorchooser_btn)
+            if color_radio_var.get() == "color3":
+                colorchooser_btn = colorchooser.askcolor()[-1]
+                print(colorchooser_btn)
+                global glb_color_3
+                glb_color_3 = str(colorchooser_btn)
+
+        color_radio_var = StringVar(value = "other")
+
+        color_1_radbtn = CTkRadioButton (color_2_frame , text = "Color-1", value = "color1", variable = color_radio_var, command = radio_value)
+        color_1_radbtn.place(x = 15, y = 70)
+
+        color_2_radbtn = CTkRadioButton (color_2_frame ,text = "Color-2", value = "color2" , variable = color_radio_var, command=radio_value)
+        color_2_radbtn.place(x = 91, y = 70)
+
+        color_3_radbtn = CTkRadioButton (color_2_frame ,text = "Color-3", value = "color3" ,variable =  color_radio_var, command = radio_value)
+        color_3_radbtn.place(x = 177, y = 70)
+
         # colorchooser_btn = colorchooser.askcolor()
         # colorchooser_btn = list(colorchooser_btn)
         # print(colorchooser_btn[-1])
+
+        color_root.mainloop()
 
     img = Image.open(r"Images/" + "setting.png")
     setting_btn = CTkButton(update_frame,text = "", image = CTkImage(dark_image=img, light_image=img),corner_radius = 42,
