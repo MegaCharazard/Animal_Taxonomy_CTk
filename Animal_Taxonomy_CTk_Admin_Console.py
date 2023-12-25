@@ -416,72 +416,6 @@ def update_page():
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
-    
-    def setting():
-
-        color_root = CTk()
-        color_root.geometry("400x300")
-        centreScreen(color_root, root,400,300)
-        color_root.title("Costomize")
-        color_root.iconbitmap(r"icon/favicon6.ico")
-
-        color_1_frame = CTkFrame(color_root, width = 400, height = 300, border_color=glb_color_1, border_width=2, fg_color="transparent")
-        color_1_frame.pack()
-
-        color_2_frame = CTkFrame(color_1_frame, width = 370, height = 270, border_color=glb_color_2, border_width=2, fg_color="transparent")
-        color_2_frame.place(x = glb_common_xpos, y = 15)
-
-        label = CTkLabel(color_2_frame, text = "Costomize Color", text_color = glb_color_3, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
-        label.place(x = 75, y= 15)
-
-        color_3_frame = CTkFrame(color_2_frame, width = 340, height = 155, border_color=glb_color_3, border_width=2, fg_color="transparent")
-        color_3_frame.place(x = glb_common_xpos, y = 100)
-
-        label = CTkLabel(color_2_frame, text = "Choose Color:-", text_color = glb_color_2, font = ("Bradley Hand ITC" , 20, "italic", "bold"))
-        label.place(x = 15, y= 45)
-
-        label = CTkLabel(color_3_frame, text = "Costomize Color", text_color = glb_color_1, font = ("Bradley Hand ITC" , 30, "italic", "bold"))
-        label.place(x = 75, y= 15)
-
-        def radio_value():
-            if color_radio_var.get() == "color1":
-                colorchooser_btn = colorchooser.askcolor()[-1]
-                print(colorchooser_btn)
-                global glb_color_1
-                glb_color_1 = str(colorchooser_btn)
-            elif color_radio_var.get() == "color2":
-                colorchooser_btn = colorchooser.askcolor()[-1]
-                print(colorchooser_btn)
-                global glb_color_2
-                glb_color_2 = str(colorchooser_btn)
-            if color_radio_var.get() == "color3":
-                colorchooser_btn = colorchooser.askcolor()[-1]
-                print(colorchooser_btn)
-                global glb_color_3
-                glb_color_3 = str(colorchooser_btn)
-
-        color_radio_var = StringVar(value = "other")
-
-        color_1_radbtn = CTkRadioButton (color_2_frame , text = "Color-1", value = "color1", variable = color_radio_var, command = radio_value)
-        color_1_radbtn.place(x = 15, y = 70)
-
-        color_2_radbtn = CTkRadioButton (color_2_frame ,text = "Color-2", value = "color2" , variable = color_radio_var, command=radio_value)
-        color_2_radbtn.place(x = 91, y = 70)
-
-        color_3_radbtn = CTkRadioButton (color_2_frame ,text = "Color-3", value = "color3" ,variable =  color_radio_var, command = radio_value)
-        color_3_radbtn.place(x = 177, y = 70)
-
-        # colorchooser_btn = colorchooser.askcolor()
-        # colorchooser_btn = list(colorchooser_btn)
-        # print(colorchooser_btn[-1])
-
-        color_root.mainloop()
-
-    img = Image.open(r"Images/" + "setting.png")
-    setting_btn = CTkButton(update_frame,text = "", image = CTkImage(dark_image=img, light_image=img),corner_radius = 42,
-                         width=  glb_img_btn_width, height= glb_img_btn_height,hover_color= glb_color_3,
-                           command = lambda: (setting()))
-    setting_btn.place(x = 15, y = 15)
 
     update_btn = createButton(update_frame, "Update", 40, update, 430, 415)
 
@@ -538,20 +472,27 @@ def delete_page():
 
     name_entry = CTkEntry(delete_frame, text_color = glb_color_3, width = 600)
     name_entry.place(x = 170, y = 210)
+
+    species_label = CTkLabel(delete_frame, text = "Species :-", font = ("Bradley Hand ITC" , 20, "italic", "bold"), text_color = glb_color_2)
+    species_label.place(x = glb_common_xpos, y = 240)
+
+    species_entry = CTkEntry(delete_frame, text_color = glb_color_3, width = 600)
+    species_entry.place(x = 170, y = 240)
     
     def on_delete_entry_click():
         _name = name_entry.get().title()
+        _species = species_entry.get().title()
 
-        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_name+"' AND active = 1"
+        tmp_qry = "SELECT name FROM animal_details WHERE name = '"+_name+"' AND species = '"+_species+"' AND active = 1"
         cur.execute(tmp_qry)
         row = cur.fetchone()
         if row :
-            cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"'")
+            cur.execute("UPDATE animal_details set active = 0 WHERE name = '"+_name+"' AND species = '"+_species+"' AND active = 1")
             con.commit()
 
             errorlabel = CTkLabel(delete_frame, text = "Sucsesfully Deleted", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Green" )
-            errorlabel.place(x = 600, y = 243)
+            errorlabel.place(x = 600, y = 270)
             def refresh():
                 errorlabel.configure(text = "")
                 delete_page()
@@ -560,12 +501,12 @@ def delete_page():
 
             errorlabel = CTkLabel(delete_frame, text = "No Such Animal", font = ("Arial", 12, "italic", "bold"),
                                 fg_color = "transparent", text_color = "Red" )
-            errorlabel.place(x = 600, y = 243)
+            errorlabel.place(x = 600, y = 270)
             def refresh():
                 errorlabel.configure(text = "")
             errorlabel.after(glb_after_time, refresh)
 
-    delete_admin_btn = createButton(delete_frame, "Delete Entry", 40, on_delete_entry_click, 430, 245)
+    delete_admin_btn = createButton(delete_frame, "Delete Entry", 40, on_delete_entry_click, 430, 275)
 
 def home_page():
     home_frame = createFrame(main_frame,  glb_color_2,  2, "transparent", _is_content_frame = True)
@@ -882,7 +823,9 @@ def phylum_page():
 
     label = createSearchResultLabel(phylum_frame)
     
-    combo = CTkComboBox(phylum_frame, width = 640)
+    combo_val = ["Choose An Option"]
+    combo = CTkComboBox(phylum_frame, width = 640, values=combo_val)
+    combo.set("Choose An Option")
     combo.place(x = 10, y = 130)
 
 
